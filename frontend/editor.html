@@ -13,25 +13,25 @@
     <link rel="stylesheet" href="css/editor.css">
 
     <script src="js/components/nav.js" defer></script>
+    <script src="js/editor.js" defer></script>
 </head>
 <body>
 
     <div class="banner">
-        <input type="file" accept="image/*" id="banner-upload" hidden>
-        <label for="banner-upload" class="fa-solid fa-upload banner-upload-btn"></label>
+        <img class="banner" id="output" src="#" alt="your image" />
+        <input type="file" accept="image/*" id="bannerUpload" hidden>
+        <label for="bannerUpload" class="fa-solid fa-upload banner-upload-btn"></label>
     </div>
 
     <div class="blog">
-        <textarea type="text" class="title" placeholder="Blog title..." id="blog-title"></textarea>
-        <textarea type="text" class="article" placeholder="Start writing..." id="blog-content"></textarea>
+        <label for="blogTitle"></label><textarea class="title" placeholder="Blog title..." id="blogTitle"></textarea>
+        <label for="blogContent"></label><textarea class="article" placeholder="Start writing..." id="blogContent"></textarea>
     </div>
 
     <div class="blog-options">
         <button class="btn dark publish-btn">publish</button>
-        <input type="file" accept="image/*" id="image-upload" hidden>
-        <label for="image-upload" class="btn grey publish-btn">Upload image</label>
+        <input type="file" accept="image/*" id="imageUpload" hidden>
+        <label for="imageUpload" class="btn grey publish-btn" >Upload image</label>
     </div>
-
-
 </body>
 </html>
