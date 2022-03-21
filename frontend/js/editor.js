@@ -7,8 +7,6 @@ const output = document.querySelector("#output")
 
 // publish blog vars
 const publishButton = document.querySelector("#publishButton")
-const titleValue = document.getElementById("blogTitle").value;
-const contentValue = document.getElementById("blogContent").value;
 
 bannerUpload.onchange = () => {
     const [file] = bannerUpload.files
@@ -18,6 +16,9 @@ bannerUpload.onchange = () => {
 }
 
 const publishPost = () => {
+    const titleValue = document.querySelector("#blogTitle").value;
+    const contentValue = document.querySelector("#blogContent").value;
+
     const data = {
         "title": titleValue,
         "content": contentValue
