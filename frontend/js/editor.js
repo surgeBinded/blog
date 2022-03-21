@@ -1,5 +1,5 @@
-const baseUrl = "http://localhost:8080/v1";
-const posts = "/posts"
+const baseUrl = "http://localhost:8080/api/v1";
+const article = "/article"
 
 // banner preview vars
 const bannerUpload = document.querySelector("#bannerUpload")
@@ -19,11 +19,11 @@ bannerUpload.onchange = () => {
 
 const publishPost = () => {
     const data = {
-        "password": titleValue,
-        "username": contentValue
+        "title": titleValue,
+        "content": contentValue
     };
 
-    fetch(baseUrl + posts, {
+    fetch(baseUrl + article, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
