@@ -1,19 +1,33 @@
 const baseUrl = "http://localhost:8080/api/v1";
-const article = "/article"
+const article = "/article";
 
 // banner preview vars
-const bannerUpload = document.querySelector("#bannerUpload")
-const output = document.querySelector("#output")
+const bannerUpload = document.querySelector("#bannerUpload");
+const output = document.querySelector("#output");
 
 // publish blog vars
-const publishButton = document.querySelector("#publishButton")
+const publishButton = document.querySelector("#publishButton");
+let base64image = "something";
 
 bannerUpload.onchange = () => {
-    const [file] = bannerUpload.files
+
+    // I don't know how this works, but it converts images into base64
+    let file = document.querySelector(
+        'input[type=file]')['files'][0];
+    let reader = new FileReader();
+    reader.onload = function () {
+        base64image = reader.result.replace("data:", "")
+            .replace(/^.+,/, "");
+    }
+    reader.readAsDataURL(file);
+
+    // show a preview of the banner image
+    [file] = bannerUpload.files
     if (file) {
         output.src = URL.createObjectURL(file)
     }
 }
+
 
 const publishPost = () => {
     const titleValue = document.querySelector("#blogTitle").value;
