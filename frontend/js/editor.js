@@ -7,27 +7,17 @@ const output = document.querySelector("#output");
 
 // publish blog vars
 const publishButton = document.querySelector("#publishButton");
-let base64image = "something";
 
 bannerUpload.onchange = () => {
-
-    // I don't know how this works, but it converts images into base64
-    let file = document.querySelector(
-        'input[type=file]')['files'][0];
-    let reader = new FileReader();
-    reader.onload = function () {
-        base64image = reader.result.replace("data:", "")
-            .replace(/^.+,/, "");
-    }
-    reader.readAsDataURL(file);
-
     // show a preview of the banner image
-    [file] = bannerUpload.files
+    const [file] = bannerUpload.files
+    console.log(file)
     if (file) {
         output.src = URL.createObjectURL(file)
+        console.log(output)
+        console.log(output.src)
     }
 }
-
 
 const publishPost = () => {
     const titleValue = document.querySelector("#blogTitle").value;
