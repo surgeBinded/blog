@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.*
 class ArticleController @Autowired constructor(private val articleRepository: ArticleRepository) {
 
     @GetMapping("/articles")
-    fun getArticles() : List<Article> = articleRepository.findAll()
+    fun getArticles(): List<Article> = articleRepository.findAll()
 
     @PostMapping("/article")
-    fun createArticle(@RequestBody article: Article) = articleRepository.save(article)
+    fun createArticle(
+        @RequestBody article: Article
+    ): Article {
+        articleRepository.save(article)
+        return article
+    }
 }

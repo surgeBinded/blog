@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.domainobject
 
 import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.web.multipart.MultipartFile
+import org.springframework.lang.Nullable
 import java.time.ZonedDateTime
 import javax.persistence.*
 
@@ -10,9 +10,8 @@ import javax.persistence.*
 class Article(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long,
               @Column(nullable = false) var title: String,
               @Lob @Column(nullable = false) var content: String,
-              @Lob @Column var bannerImage: MultipartFile
+              @Nullable @Lob var bannerImage: String,
+              @Column(nullable = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) var dateCreated: ZonedDateTime = ZonedDateTime.now()
 ){
-    @Column(nullable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    var dateCreated = ZonedDateTime.now()
+
 }

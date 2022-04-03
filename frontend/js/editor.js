@@ -7,15 +7,29 @@ const output = document.querySelector("#output");
 
 // publish blog vars
 const publishButton = document.querySelector("#publishButton");
+let bannerImage = null
+
+const toDataURL = url => fetch(url)
+    .then(response => response.blob())
+    .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+    }))
 
 bannerUpload.onchange = () => {
     // show a preview of the banner image
     const [file] = bannerUpload.files
     console.log(file)
+
     if (file) {
         output.src = URL.createObjectURL(file)
-        console.log(output)
-        console.log(output.src)
+        toDataURL(output.src)
+            .then(dataUrl => {
+                bannerImage = dataUrl
+                console.log('RESULT:', dataUrl)
+            })
     }
 }
 
@@ -25,7 +39,8 @@ const publishPost = () => {
 
     const data = {
         "title": titleValue,
-        "content": contentValue
+        "content": contentValue,
+        "bannerImage": bannerImage
     };
 
     fetch(baseUrl + article, {
