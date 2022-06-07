@@ -4,7 +4,7 @@ const printHtml = () => {
     nav.innerHTML = `
         <img src="img/avataaars.png" width="60" height="60" class="logo" alt=""/>
         <ul class="link-container">
-            <li class="link-item"><a href="/home.html" class="link">home</a></li>
+            <li class="link-item"><a href="/index.html" class="link">home</a></li>
             <li class="link-item"><a href="/editor.html" class="link">editor</a></li>
         </ul>
     `;
