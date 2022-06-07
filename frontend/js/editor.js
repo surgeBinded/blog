@@ -61,4 +61,5 @@ const publishPost = () => {
 
 publishButton.onclick = () => {
     publishPost();
+    location.href = "/index.html"
 }
