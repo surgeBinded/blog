@@ -8,6 +8,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) : ArticleService {
+
+    override fun getArticle(id: Long): Article {
+        return articleRepository.getById(id)
+    }
+
     override fun getAllArticles(): MutableList<Article> {
         return articleRepository.findAll()
     }

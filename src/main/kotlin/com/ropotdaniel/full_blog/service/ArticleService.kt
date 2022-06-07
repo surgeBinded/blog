@@ -4,6 +4,8 @@ import com.ropotdaniel.full_blog.domainobject.Article
 
 interface ArticleService {
 
+    fun getArticle(id: Long): Article
+
     fun getAllArticles(): MutableList<Article>
 
     fun createArticle(article: Article): Article
