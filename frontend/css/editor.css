@@ -55,6 +55,9 @@ textarea::-webkit-scrollbar-thumb{
     padding: 10px;
     border-radius: 10px;
 }
+.note-editor{
+    margin: 50px;
+}
 
 .title::placeholder,
 .article::placeholder{

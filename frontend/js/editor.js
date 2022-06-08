@@ -35,7 +35,7 @@ bannerUpload.onchange = () => {
 
 const publishPost = () => {
     const titleValue = document.querySelector("#blogTitle").value;
-    const contentValue = document.querySelector("#blogContent").value;
+    const contentValue = $('#summernote').summernote('code');
 
     const data = {
         "title": titleValue,

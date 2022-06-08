@@ -10,7 +10,7 @@ const fetchArticle = () => {
         .then(element => {
                 document.getElementById("articleTitle").innerText = element.title;
                 document.getElementById("articlePublishDate").innerText = element.dateCreated;
-                document.getElementById("articleContent").innerText = element.content;
+                document.getElementById("articleContent").innerHTML = element.content;
                 const image = document.createElement("img")
                 image.setAttribute("class", "banner")
                 image.setAttribute("id", "output")

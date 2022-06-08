@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blog: Editor</title>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
@@ -25,11 +29,21 @@
 
     <div class="blog">
         <label for="blogTitle"></label><textarea class="title" placeholder="Blog title..." id="blogTitle"></textarea>
-        <label for="blogContent"></label><textarea class="article" placeholder="Start writing..." id="blogContent"></textarea>
     </div>
+
+    <div id="summernote"></div>
+    <script>
+        $('#summernote').summernote({
+            placeholder: 'Hello Bootstrap 5',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
 
     <div class="blog-options">
         <button class="btn dark publish-btn" id="publishButton">publish</button>
     </div>
+
+
 </body>
 </html>
