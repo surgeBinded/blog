@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) : ArticleService {
 
     override fun getArticle(id: Long): Article {
-        return articleRepository.getById(id)
+        return articleRepository.getReferenceById(id)
     }
 
     override fun getAllArticles(): MutableList<Article> {
@@ -23,8 +23,8 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
 
     @Transactional
     override fun updateArticle(id: Long, modifiedArticle: Article): Article {
-        val article = articleRepository.getById(id)
-        article.bannerImage = modifiedArticle.bannerImage
+        val article = articleRepository.getReferenceById(id)
+        article.bannerImageUrl = modifiedArticle.bannerImageUrl
         article.content = modifiedArticle.content
         article.dateCreated = modifiedArticle.dateCreated
 
