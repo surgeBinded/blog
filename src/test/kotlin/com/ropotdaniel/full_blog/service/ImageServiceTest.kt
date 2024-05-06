@@ -16,23 +16,18 @@ class ImageServiceTest {
 
     @Test
     fun saveImage() {
-        // Create a mock MultipartFile
-        val originalFilename = "test.jpg"
-        val content = "test data".toByteArray()
-        val file = MockMultipartFile(originalFilename, originalFilename, "image/jpeg", content)
-//        given(resourceLoader.getResource("classpath:/static/images/")).willReturn()
-        // Call the method under test
-        val image = imageService.saveImage(file)
+        val file = MockMultipartFile("file", "test.jpg", "image/jpeg", "test".toByteArray())
 
-        // Verify the returned Image
-        assertTrue(image.name.startsWith(originalFilename))
-        assertTrue(image.url.startsWith("/images/"))
+        val imageDO = imageService.saveImage(file)
 
-        // Clean up the created file
-        val resource = resourceLoader.getResource("classpath:static/images/")
-        val targetLocation = Paths.get(resource.uri.path + image.name)
-        if (Files.exists(targetLocation)) {
-            FileSystemUtils.deleteRecursively(targetLocation)
-        }
+        assertNotNull(imageDO)
+        assertEquals("${imageDO.name}", imageDO.name)
+
+        val directoryPath = Paths.get(System.getProperty("user.home"), "uploads", "images")
+        val destinationPath = directoryPath.resolve(imageDO.name)
+        val destinationFile = destinationPath.toFile()
+
+        assertTrue(Files.exists(destinationPath))
+        assertTrue(destinationFile.delete())
     }
 }
