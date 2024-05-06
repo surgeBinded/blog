@@ -9,7 +9,7 @@ import org.springframework.util.FileSystemUtils
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class ImageDOServiceTest {
+class ImageServiceTest {
 
     private val resourceLoader: ResourceLoader = mock(ResourceLoader::class.java)
     private val imageService = ImageService(resourceLoader)

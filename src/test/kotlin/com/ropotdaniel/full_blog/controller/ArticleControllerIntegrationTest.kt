@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.ZonedDateTime
 
 @WebMvcTest(ArticleController::class)
-class ArticleDOControllerIntegrationTest {
+class ArticleControllerIntegrationTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc

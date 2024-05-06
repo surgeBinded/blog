@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 
-class ArticleDOServiceImplTest {
+class ArticleServiceImplTest {
 
     private val articleRepository: ArticleRepository = mock(ArticleRepository::class.java)
     private val articleService: ArticleService = ArticleServiceImpl(articleRepository)
