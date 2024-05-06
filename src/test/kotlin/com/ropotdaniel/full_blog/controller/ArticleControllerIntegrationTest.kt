@@ -92,5 +92,4 @@ class ArticleControllerIntegrationTest {
         mockMvc.perform(delete("/api/v1/article/1"))
             .andExpect(status().isOk)
     }
-
 }
