@@ -12,6 +12,4 @@ class ArticleDO(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: 
                 @Lob @Column(nullable = false) var content: String,
                 @Nullable @Lob var bannerImageUrl: String,
                 @Column(nullable = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) var dateCreated: ZonedDateTime = ZonedDateTime.now()
-){
-
-}
+)
