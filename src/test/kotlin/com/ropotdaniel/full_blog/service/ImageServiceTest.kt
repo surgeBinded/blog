@@ -3,14 +3,13 @@ package com.ropotdaniel.full_blog.service
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.given
 import org.springframework.core.io.ResourceLoader
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.util.FileSystemUtils
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class ImageServiceTest {
+class ImageDOServiceTest {
 
     private val resourceLoader: ResourceLoader = mock(ResourceLoader::class.java)
     private val imageService = ImageService(resourceLoader)

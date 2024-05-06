@@ -1,27 +1,34 @@
 package com.ropotdaniel.full_blog.service
 
-import com.ropotdaniel.full_blog.domainobject.Image
-import jakarta.servlet.http.HttpServletRequest
-import org.springframework.beans.factory.annotation.Autowired
+import com.ropotdaniel.full_blog.domainobject.ImageDO
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 
 
 @Service
 class ImageService(private val resourceLoader: ResourceLoader) {
-    @Autowired
-    private val request: HttpServletRequest? = null
-
-    fun saveImage(file: MultipartFile): Image {
+    fun saveImage(file: MultipartFile): ImageDO {
         val newFilename = "${file.originalFilename}-${UUID.randomUUID()}"
 
-        val filePath: String = request?.servletContext?.getRealPath("classpath:static/images/").toString()
-        file.transferTo(File(filePath))
+        val directoryPath = Paths.get(System.getProperty("user.home"), "uploads", "images")
 
-        val imageUrl = "/images/" + newFilename
-        return Image(name = newFilename, url = imageUrl)
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath)
+        }
+
+        val destinationPath = directoryPath.resolve(newFilename)
+        val destinationFile = destinationPath.toFile()
+
+        if (!destinationFile.exists()) {
+            destinationFile.createNewFile()
+        }
+
+        file.transferTo(destinationFile)
+
+        return ImageDO(name = newFilename, url = "/images/" + newFilename)
     }
 }

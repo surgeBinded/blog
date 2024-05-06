@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ropotdaniel.full_blog.domainobject.Article
+import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.ZonedDateTime
 
 @WebMvcTest(ArticleController::class)
-class ArticleControllerIntegrationTest {
+class ArticleDOControllerIntegrationTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -26,11 +26,11 @@ class ArticleControllerIntegrationTest {
     private lateinit var articleService: ArticleService
 
     @Mock
-    private lateinit var article: Article
+    private lateinit var articleDO: ArticleDO
 
     @BeforeEach
     fun setup() {
-        article = Article(1L,
+        articleDO = ArticleDO(1L,
             "Test Title",
             "Test Content",
             "",
@@ -40,7 +40,7 @@ class ArticleControllerIntegrationTest {
 
     @Test
     fun `should get article by id`() {
-        `when`(articleService.getArticle(1L)).thenReturn(article)
+        `when`(articleService.getArticle(1L)).thenReturn(articleDO)
 
         mockMvc.perform(get("/api/v1/articles/1"))
             .andExpect(status().isOk)
@@ -48,7 +48,7 @@ class ArticleControllerIntegrationTest {
 
     @Test
     fun `should get all articles`() {
-        `when`(articleService.getAllArticles()).thenReturn(listOf(article).toMutableList())
+        `when`(articleService.getAllArticles()).thenReturn(listOf(articleDO).toMutableList())
 
         mockMvc.perform(get("/api/v1/articles"))
             .andExpect(status().isOk)
@@ -56,10 +56,10 @@ class ArticleControllerIntegrationTest {
 
     @Test
     fun `should create article`() {
-        `when`(articleService.createArticle(Mockito.any(Article::class.java))).thenReturn(article)
+        `when`(articleService.createArticle(Mockito.any(ArticleDO::class.java))).thenReturn(articleDO)
 
         val mapper = ObjectMapper()
-        val articleJson = mapper.writeValueAsString(article)
+        val articleJson = mapper.writeValueAsString(articleDO)
 
         mockMvc.perform(
             post("/api/v1/article")
@@ -71,11 +71,11 @@ class ArticleControllerIntegrationTest {
 
     @Test
     fun `should update article`() {
-        `when`(articleService.updateArticle(Mockito.anyLong(), Mockito.any(Article::class.java)))
-            .thenReturn(article)
+        `when`(articleService.updateArticle(Mockito.anyLong(), Mockito.any(ArticleDO::class.java)))
+            .thenReturn(articleDO)
 
         val mapper = ObjectMapper()
-        val articleJson = mapper.writeValueAsString(article)
+        val articleJson = mapper.writeValueAsString(articleDO)
 
         mockMvc.perform(
             put("/api/v1/article/1")
