@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.springframework.core.io.ResourceLoader
 import org.springframework.mock.web.MockMultipartFile
-import org.springframework.util.FileSystemUtils
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -21,7 +20,7 @@ class ImageServiceTest {
         val imageDO = imageService.saveImage(file)
 
         assertNotNull(imageDO)
-        assertEquals("${imageDO.name}", imageDO.name)
+        assertEquals(imageDO.name, imageDO.name)
 
         val directoryPath = Paths.get(System.getProperty("user.home"), "uploads", "images")
         val destinationPath = directoryPath.resolve(imageDO.name)
