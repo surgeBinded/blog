@@ -4,6 +4,7 @@ import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -17,10 +18,10 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun getArticles(): List<ArticleDO> = articleService.getAllArticles()
 
     @PostMapping("/article")
-    fun createArticle(@RequestBody articleDO: ArticleDO): ArticleDO = articleService.createArticle(articleDO)
+    fun createArticle(@Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.createArticle(articleDO)
 
     @PutMapping("/article/{id}")
-    fun updateArticle(@PathVariable id: Long, @RequestBody articleDO: ArticleDO): ArticleDO = articleService.updateArticle(id, articleDO)
+    fun updateArticle(@PathVariable id: Long, @Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.updateArticle(id, articleDO)
 
     @DeleteMapping("/article/{id}")
     fun deleteArticle(@PathVariable id: Long) = articleService.deleteArticle(id)
