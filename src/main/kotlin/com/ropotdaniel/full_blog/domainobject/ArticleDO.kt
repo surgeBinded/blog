@@ -27,9 +27,10 @@ class ArticleDO(
 
     @Nullable
     @Lob
+    @Column(name = "banner_image_url")
     var bannerImageUrl: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "date_created")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     var dateCreated: ZonedDateTime = ZonedDateTime.now()
 )
