@@ -40,7 +40,7 @@ class CommentController(
         return commentService.dislikeComment(commentId)
     }
 
-    @PutMapping("/{commentId}")
+    @PatchMapping("/{commentId}")
     fun editComment(@PathVariable commentId: Long, @RequestBody newContent: String): CommentDTO {
         return commentService.editComment(commentId, newContent)
     }
