@@ -64,7 +64,7 @@ class CommentService(
     }
 
     @Transactional
-    fun editComment(commentId: Long, newContent: String): CommentDTO {
+    fun editCommentContent(commentId: Long, newContent: String): CommentDTO {
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
         comment.content = newContent
         return toCommentDTO(commentRepository.save(comment))

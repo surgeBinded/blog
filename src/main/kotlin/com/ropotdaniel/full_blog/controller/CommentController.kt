@@ -41,8 +41,8 @@ class CommentController(
     }
 
     @PatchMapping("/{commentId}")
-    fun editComment(@PathVariable commentId: Long, @RequestBody newContent: String): CommentDTO {
-        return commentService.editComment(commentId, newContent)
+    fun editCommentContent(@PathVariable commentId: Long, @RequestBody newContent: String): CommentDTO {
+        return commentService.editCommentContent(commentId, newContent)
     }
 
     @DeleteMapping("/{commentId}")
