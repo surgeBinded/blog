@@ -6,6 +6,7 @@ import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ReplyDTO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
+import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import org.springframework.stereotype.Service
 import jakarta.transaction.Transactional
 
@@ -23,17 +24,31 @@ class CommentService(
             .map { comment -> toCommentDTO(comment) }
     }
 
+    @Transactional
     fun addComment(comment: CommentDTO): CommentDTO {
-        val createdComment = commentRepository.save(toCommentDO(comment))
+        val newCommentDO = toCommentDO(comment)
+
+        if(newCommentDO.parentComment != null && newCommentDO.parentComment?.article?.id != newCommentDO.article.id) {
+            throw WrongArticleException("Parent comment article must be the same as the comment article")
+        }
+
+        val createdComment = commentRepository.save(newCommentDO)
         return toCommentDTO(createdComment)
     }
 
+
+    // TODO: perhaps this method is unnecessary since it does almost the same thing as addComment
     @Transactional
     fun addReply(parentCommentId: Long, reply: CommentDO): CommentDTO {
         val parentComment = commentRepository.findById(parentCommentId).orElseThrow { Exception("Parent comment not found") }
-        reply.parentComment = parentComment
-        reply.article = parentComment.article
-        return toCommentDTO(commentRepository.save(reply))
+
+        if(parentComment.article.id == reply.article.id) {
+            reply.parentComment = parentComment
+            reply.article = parentComment.article
+            return toCommentDTO(commentRepository.save(reply))
+        } else {
+            throw Exception("Reply article must be the same as the parent comment article")
+        }
     }
 
     fun likeComment(commentId: Long): CommentDTO {
