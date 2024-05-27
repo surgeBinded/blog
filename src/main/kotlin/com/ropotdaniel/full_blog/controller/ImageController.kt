@@ -13,7 +13,7 @@ class ImageController @Autowired constructor(private val imageService: ImageServ
 
     @PostMapping("/image")
     fun uploadImage(@RequestParam("file") file: MultipartFile): ImageDTO {
-        return ImageMapper.mapToImageDTO(imageService.saveImage(file))
+        return ImageMapper.toImageDTO(imageService.saveImage(file))
     }
 
 }
