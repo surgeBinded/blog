@@ -30,12 +30,12 @@ class CommentController(
         return commentService.addReply(commentId, reply)
     }
 
-    @PostMapping("/{commentId}/like")
+    @PatchMapping("/{commentId}/like")
     fun likeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.likeComment(commentId)
     }
 
-    @PostMapping("/{commentId}/dislike")
+    @PatchMapping("/{commentId}/dislike")
     fun dislikeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.dislikeComment(commentId)
     }
