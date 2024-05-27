@@ -5,3 +5,13 @@ CREATE TABLE IF NOT EXISTS article (
     bannerImageUrl TEXT,
     dateCreated TIMESTAMP
     );
+
+CREATE TABLE IF NOT EXISTS comment (
+                                       id INT AUTO_INCREMENT  PRIMARY KEY,
+                                       articleId INT NOT NULL,
+    parentCommentId INT,
+    content TEXT NOT NULL,
+    likes INT NOT NULL,
+    dislikes INT NOT NULL,
+    deleted BOOLEAN NOT NULL
+    );
