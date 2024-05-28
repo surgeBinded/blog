@@ -25,6 +25,7 @@ class CommentController(
         return commentService.addComment(comment)
     }
 
+    // TODO: perhaps this method is unnecessary since it does almost the same thing as addComment
     @PostMapping("/{commentId}/reply")
     fun addReply(@PathVariable commentId: Long, @Valid @RequestBody reply: CommentDO): CommentDTO {
         return commentService.addReply(commentId, reply)
