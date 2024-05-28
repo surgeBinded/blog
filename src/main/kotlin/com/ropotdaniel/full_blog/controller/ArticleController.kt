@@ -17,9 +17,25 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @GetMapping("/articles")
     fun getArticles(): List<ArticleDO> = articleService.getAllArticles()
 
+    /*
+    * POST /api/v1/article
+    * {
+    *   "title": "Title",
+    *   "content": "Content",
+    *   "bannerImageUrl": "https://example.com/image.jpg"
+    * }
+    */
     @PostMapping("/article")
     fun createArticle(@Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.createArticle(articleDO)
 
+    /*
+    * PUT /api/v1/article/1
+    * {
+    *   "title": "Title",
+    *   "content": "Content",
+    *   "bannerImageUrl": "https://example.com/image.jpg"
+    * }
+    * */
     @PutMapping("/article/{id}")
     fun updateArticle(@PathVariable id: Long, @Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.updateArticle(id, articleDO)
 

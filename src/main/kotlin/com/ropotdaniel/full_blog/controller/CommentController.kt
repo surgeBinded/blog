@@ -20,6 +20,15 @@ class CommentController(
         return commentService.getCommentsByArticleId(articleId)
     }
 
+    /* POST /api/v1/comments
+    {
+        "articleId": 1,
+        "parentComment": {
+            "id": 1
+        },
+        "content": "This is a comment"
+    }
+    * */
     @PostMapping("/")
     fun addComment(@Valid @RequestBody comment: CommentDTO): CommentDTO {
         return commentService.addComment(comment)
@@ -31,16 +40,28 @@ class CommentController(
         return commentService.addReply(commentId, reply)
     }
 
+    /*
+    * PATCH /api/v1/comments/1/like
+    * */
     @PatchMapping("/{commentId}/like")
     fun likeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.likeComment(commentId)
     }
 
+    /*
+    * PATCH /api/v1/comments/1/dislike
+    * */
     @PatchMapping("/{commentId}/dislike")
     fun dislikeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.dislikeComment(commentId)
     }
 
+    /*
+    * PATCH /api/v1/comments/1
+    * {
+    *  "newContent": "This is the new content"
+    * }
+     */
     @PatchMapping("/{commentId}")
     fun editCommentContent(@PathVariable commentId: Long, @RequestBody newContent: String): CommentDTO {
         return commentService.editCommentContent(commentId, newContent)
