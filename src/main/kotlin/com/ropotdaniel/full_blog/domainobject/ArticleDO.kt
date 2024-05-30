@@ -1,5 +1,6 @@
 package com.ropotdaniel.full_blog.domainobject
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -30,7 +31,9 @@ class ArticleDO(
     @Column(name = "banner_image_url")
     var bannerImageUrl: String,
 
+){
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    var dateCreated: ZonedDateTime = ZonedDateTime.now()
-)
+    val dateCreated: ZonedDateTime = ZonedDateTime.now()
+}

@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.ZonedDateTime
 
 @Service
 class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) : ArticleService {
@@ -27,7 +26,6 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     override fun createArticle(articleDO: ArticleDO): ArticleDO {
         logger.info("Creating new article with title: ${articleDO.title}")
 
-        articleDO.dateCreated = ZonedDateTime.now()
         return articleRepository.save(articleDO)
     }
 
@@ -37,7 +35,6 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
         val article = articleRepository.getReferenceById(id)
         article.bannerImageUrl = modifiedArticleDO.bannerImageUrl
         article.content = modifiedArticleDO.content
-        article.dateCreated = modifiedArticleDO.dateCreated
         return article
     }
 
