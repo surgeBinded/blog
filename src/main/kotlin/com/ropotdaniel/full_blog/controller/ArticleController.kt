@@ -29,6 +29,9 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun createArticle(@Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.createArticle(articleDO)
 
     /*
+    * updates the article with the given id
+    * NOTE: the dateCreated field is not updated
+    *
     * PUT /api/v1/article/1
     * {
     *   "title": "Title",
