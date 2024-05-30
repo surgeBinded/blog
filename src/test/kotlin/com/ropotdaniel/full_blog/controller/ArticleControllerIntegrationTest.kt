@@ -36,7 +36,6 @@ class ArticleControllerIntegrationTest {
             "Test Title",
             "Test Content",
             "",
-            ZonedDateTime.now()
         )
 
         mapper = ObjectMapper()
@@ -65,7 +64,6 @@ class ArticleControllerIntegrationTest {
             id = 2L,
             title = "New Test Title",
             content = "New Test Content",
-            dateCreated = ZonedDateTime.now(),
             bannerImageUrl = ""
         )
 
@@ -83,7 +81,6 @@ class ArticleControllerIntegrationTest {
             id = 1L,
             title = "Updated Test Title",
             content = "Updated Test Content",
-            dateCreated = ZonedDateTime.now(),
             bannerImageUrl = ""
         )
 
