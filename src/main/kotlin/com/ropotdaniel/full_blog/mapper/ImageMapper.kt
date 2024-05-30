@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.controller.mapper
+package com.ropotdaniel.full_blog.mapper
 
 import com.ropotdaniel.full_blog.datatransferobject.ImageDTO
 import com.ropotdaniel.full_blog.domainobject.ImageDO

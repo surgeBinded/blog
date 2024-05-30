@@ -6,6 +6,7 @@ import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ReplyDTO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
+import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import org.springframework.stereotype.Service
 import jakarta.transaction.Transactional
@@ -35,7 +36,6 @@ class CommentService(
         val createdComment = commentRepository.save(newCommentDO)
         return toCommentDTO(createdComment)
     }
-
 
     // TODO: perhaps this method is unnecessary since it does almost the same thing as addComment
     @Transactional
@@ -78,7 +78,7 @@ class CommentService(
         return toCommentDTO(commentRepository.save(comment))
     }
 
-    private fun toCommentDTO(comment: CommentDO): CommentDTO {
+    fun toCommentDTO(comment: CommentDO): CommentDTO {
         return CommentDTO(
             id = comment.id,
             articleId = comment.article.id,
@@ -91,11 +91,19 @@ class CommentService(
         )
     }
 
-    private fun toCommentDO(comment: CommentDTO): CommentDO {
+    fun toCommentDO(comment: CommentDTO): CommentDO {
+        val article = articleRepository.getReferenceById(comment.articleId)
+        val parentComment = comment.parentComment?.let {
+            commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Parent comment not found") }
+        }
+        val replies = comment.replies.map {
+            commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Reply not found") }
+        }.toMutableList()
+
         return CommentDO(
-            article = articleRepository.getReferenceById(comment.articleId),
-            parentComment = comment.parentComment?.let { commentRepository.findById(it.id).orElseThrow { Exception("Parent comment not found") } },
-            replies = comment.replies.map { reply -> commentRepository.findById(reply.id).orElseThrow { Exception("Reply not found") } }.toMutableList(),
+            article = article,
+            parentComment = parentComment,
+            replies = replies,
             content = comment.content,
             likes = comment.likes,
             dislikes = comment.dislikes,

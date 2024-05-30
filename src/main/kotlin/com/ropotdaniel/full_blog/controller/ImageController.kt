@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
-import com.ropotdaniel.full_blog.controller.mapper.ImageMapper
+import com.ropotdaniel.full_blog.mapper.ImageMapper
 import com.ropotdaniel.full_blog.datatransferobject.ImageDTO
 import com.ropotdaniel.full_blog.service.ImageService
 import org.springframework.beans.factory.annotation.Autowired
