@@ -37,6 +37,7 @@ class CommentMapper(
         }.toMutableList()
 
         return CommentDO(
+            id = comment.id,
             article = article,
             parentComment = parentComment,
             replies = replies,

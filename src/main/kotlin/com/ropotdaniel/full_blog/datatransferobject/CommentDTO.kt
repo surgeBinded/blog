@@ -1,20 +1,20 @@
 package com.ropotdaniel.full_blog.datatransferobject
 
 data class CommentDTO(
-    val id: Long,
-    val articleId: Long,
-    val parentComment: ParentCommentDTO?,
-    val replies: MutableList<ReplyDTO> = mutableListOf(),
-    val content: String,
-    val likes: Int,
-    val dislikes: Int,
-    val deleted: Boolean
+    var id: Long,
+    var articleId: Long,
+    var parentComment: ParentCommentDTO?,
+    var replies: MutableList<ReplyDTO> = mutableListOf(),
+    var content: String,
+    var likes: Int,
+    var dislikes: Int,
+    var deleted: Boolean
 )
 
 data class ParentCommentDTO(
-    val id: Long
+    var id: Long
 )
 
 data class ReplyDTO(
-    val id: Long
+    var id: Long
 )

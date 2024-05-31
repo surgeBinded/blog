@@ -20,7 +20,7 @@ data class CommentDO(
     var content: String,
 
 //    @ManyToOne @JoinColumn(name = "user_id")
-//    val user: UserDO,
+//    var user: UserDO,
 
     var likes: Int = 0,
     var dislikes: Int = 0,
