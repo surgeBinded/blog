@@ -1,5 +1,4 @@
 package com.ropotdaniel.full_blog.service
-import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
@@ -11,15 +10,9 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyLong
-import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.given
-import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class CommentServiceTest {
@@ -38,8 +31,8 @@ class CommentServiceTest {
     @Test
     fun `should add a new comment`() {
         // given
-        val commentDTO = createCommentDTO()
-        val commentDO = createCommentDO()
+        val commentDTO = givenCommentDTO()
+        val commentDO = givenCommentDO()
 
         given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
         given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
@@ -56,14 +49,14 @@ class CommentServiceTest {
     @Test
     fun `should throw WrongArticleException when parent comment article is not the same as the comment article`() {
         // given
-        val commentDTO = createCommentDTO(
+        val commentDTO = givenCommentDTO(
             parentComment = ParentCommentDTO(id = 2L)
         )
-        val parentComment = createCommentDO(
+        val parentComment = givenCommentDO(
             id = 2L,
-            article = createArticleDO(id = 2L)
+            article = givenArticleDO(id = 2L)
         )
-        val commentDO = createCommentDO(
+        val commentDO = givenCommentDO(
             parentComment = parentComment
         )
 
@@ -78,7 +71,7 @@ class CommentServiceTest {
         verify(commentRepository, never()).save(commentDO)
     }
 
-    private fun createCommentDTO(
+    private fun givenCommentDTO(
         id: Long = 1L,
         articleId: Long = 1L,
         parentComment: ParentCommentDTO? = null,
@@ -98,7 +91,7 @@ class CommentServiceTest {
         )
     }
 
-    private fun createArticleDO(
+    private fun givenArticleDO(
         id: Long = 1L,
         title: String = "Test Article",
         content: String = "Test Content",
@@ -112,9 +105,9 @@ class CommentServiceTest {
         )
     }
 
-    private fun createCommentDO(
+    private fun givenCommentDO(
         id: Long = 1L,
-        article: ArticleDO = createArticleDO(),
+        article: ArticleDO = givenArticleDO(),
         parentComment: CommentDO? = null,
         content: String = "Test content",
         likes: Int = 10,
