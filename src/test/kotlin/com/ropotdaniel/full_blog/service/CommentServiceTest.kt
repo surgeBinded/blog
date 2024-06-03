@@ -35,92 +35,36 @@ class CommentServiceTest {
         commentService = CommentService(commentRepository, commentMapper)
     }
 
-   @Test
-   fun `should add a new comment`() {
-       // given
-         val commentDTO = CommentDTO(
-              id = 1L,
-              articleId = 1L,
-              parentComment = null,
-              content = "Test content",
-              likes = 10,
-              dislikes = 2,
-              deleted = false
-         )
+    @Test
+    fun `should add a new comment`() {
+        // given
+        val commentDTO = createCommentDTO()
+        val commentDO = createCommentDO()
 
-       val commentDO = CommentDO(
-           id = 1L,
-           article = ArticleDO(
-               id = 1L,
-               title = "Test Article",
-               content = "Test Content",
-               bannerImageUrl = "url",
-           ),
-           parentComment = null,
-           replies = mutableListOf(),
-           content = "Test content",
-           likes = 10,
-           dislikes = 2,
-           deleted = false
-       )
+        given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentRepository.save(commentDO)).willReturn(commentDO)
 
-       given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
-       given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
-       given(commentRepository.save(commentDO)).willReturn(commentDO)
+        // when
+        val result = commentService.addComment(commentDTO)
 
-       // when
-       val result = commentService.addComment(commentDTO)
-
-       // then
-       verify(commentRepository).save(commentDO)
-       assertNotNull(result)
-   }
+        // then
+        verify(commentRepository).save(commentDO)
+        assertNotNull(result)
+    }
 
     @Test
     fun `should throw WrongArticleException when parent comment article is not the same as the comment article`() {
         // given
-        val commentDTO = CommentDTO(
-            id = 1L,
-            articleId = 1L,
-            parentComment = ParentCommentDTO(
-                id = 2L
-            ),
-            content = "Test content",
-            likes = 10,
-            dislikes = 2,
-            deleted = false
+        val commentDTO = createCommentDTO(
+            parentComment = ParentCommentDTO(id = 2L)
         )
-
-        val parentComment = CommentDO(
+        val parentComment = createCommentDO(
             id = 2L,
-            article = ArticleDO(
-                id = 2L,
-                title = "Test Article",
-                content = "Test Content",
-                bannerImageUrl = "url",
-            ),
-            parentComment = null,
-            replies = mutableListOf(),
-            content = "Test content",
-            likes = 10,
-            dislikes = 2,
-            deleted = false
+            article = createArticleDO(id = 2L)
         )
-
-        val commentDO = CommentDO(
-            id = 1L,
-            article = ArticleDO(
-                id = 1L,
-                title = "Test Article",
-                content = "Test Content",
-                bannerImageUrl = "url",
-            ),
-            parentComment = parentComment,
-            replies = mutableListOf(),
-            content = "Test content",
-            likes = 10,
-            dislikes = 2,
-            deleted = false
+        val commentDO = createCommentDO(
+            parentComment = parentComment
         )
 
         given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
@@ -132,5 +76,60 @@ class CommentServiceTest {
 
         // then
         verify(commentRepository, never()).save(commentDO)
+    }
+
+    private fun createCommentDTO(
+        id: Long = 1L,
+        articleId: Long = 1L,
+        parentComment: ParentCommentDTO? = null,
+        content: String = "Test content",
+        likes: Int = 10,
+        dislikes: Int = 2,
+        deleted: Boolean = false
+    ): CommentDTO {
+        return CommentDTO(
+            id = id,
+            articleId = articleId,
+            parentComment = parentComment,
+            content = content,
+            likes = likes,
+            dislikes = dislikes,
+            deleted = deleted
+        )
+    }
+
+    private fun createArticleDO(
+        id: Long = 1L,
+        title: String = "Test Article",
+        content: String = "Test Content",
+        bannerImageUrl: String = "url"
+    ): ArticleDO {
+        return ArticleDO(
+            id = id,
+            title = title,
+            content = content,
+            bannerImageUrl = bannerImageUrl
+        )
+    }
+
+    private fun createCommentDO(
+        id: Long = 1L,
+        article: ArticleDO = createArticleDO(),
+        parentComment: CommentDO? = null,
+        content: String = "Test content",
+        likes: Int = 10,
+        dislikes: Int = 2,
+        deleted: Boolean = false
+    ): CommentDO {
+        return CommentDO(
+            id = id,
+            article = article,
+            parentComment = parentComment,
+            replies = mutableListOf(),
+            content = content,
+            likes = likes,
+            dislikes = dislikes,
+            deleted = deleted
+        )
     }
 }
