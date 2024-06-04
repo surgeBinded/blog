@@ -112,6 +112,72 @@ class CommentServiceTest {
         assertEquals(11, result.likes)
     }
 
+    @Test
+    fun `should add dislike to the comment`() {
+        // given
+        val commentId = 1L
+        val commentDO = givenCommentDO()
+        val commentDTO = givenCommentDTO(dislikes = 3)
+
+        given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
+        given(commentRepository.save(commentDO)).willReturn(commentDO)
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+
+        // when
+        val result = commentService.dislikeComment(commentId)
+
+        // then
+        verify(commentRepository).findById(commentId)
+        verify(commentRepository).save(commentDO)
+        assertNotNull(result)
+        assertEquals(3, result.dislikes)
+    }
+
+    @Test
+    fun `should edit the comment content`() {
+        // given
+        val commentId = 1L
+        val newContent = "New content"
+        val commentDO = givenCommentDO()
+        val commentDTO = givenCommentDTO(content = newContent)
+
+        given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
+        given(commentRepository.save(commentDO)).willReturn(commentDO)
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+
+        // when
+        val result = commentService.editCommentContent(commentId, newContent)
+
+        // then
+        verify(commentRepository).findById(commentId)
+        verify(commentRepository).save(commentDO)
+        assertNotNull(result)
+        assertEquals(newContent, result.content)
+    }
+
+    @Test
+    fun `should delete the comment`() {
+        // given
+        val commentId = 1L
+        val content = "This comment has been deleted."
+        val commentDO = givenCommentDO()
+        val commentDTO = givenCommentDTO(content = content, deleted = true)
+
+        given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
+        given(commentRepository.save(commentDO)).willReturn(commentDO)
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+
+        // when
+        val result = commentService.deleteComment(commentId)
+
+        // then
+        verify(commentRepository).findById(commentId)
+        verify(commentRepository).save(commentDO)
+        assertNotNull(result)
+        assertTrue(result.deleted)
+        assertEquals(content, result.content)
+    }
+
     private fun givenCommentDTO(
         id: Long = 1L,
         articleId: Long = 1L,
