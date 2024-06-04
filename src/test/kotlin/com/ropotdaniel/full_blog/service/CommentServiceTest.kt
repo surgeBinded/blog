@@ -91,6 +91,27 @@ class CommentServiceTest {
         verify(commentRepository, never()).save(commentDO)
     }
 
+    @Test
+    fun `should add like to the comment`() {
+        // given
+        val commentId = 1L
+        val commentDO = givenCommentDO()
+        val commentDTO = givenCommentDTO(likes = 11)
+
+        given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
+        given(commentRepository.save(commentDO)).willReturn(commentDO)
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+
+        // when
+        val result = commentService.likeComment(commentId)
+
+        // then
+        verify(commentRepository).findById(commentId)
+        verify(commentRepository).save(commentDO)
+        assertNotNull(result)
+        assertEquals(11, result.likes)
+    }
+
     private fun givenCommentDTO(
         id: Long = 1L,
         articleId: Long = 1L,
