@@ -29,6 +29,26 @@ class CommentServiceTest {
     }
 
     @Test
+    fun `should get a list of articles`() {
+        // given
+        val articleId = 1L
+        val commentDTO = givenCommentDTO(articleId = articleId)
+        val commentDO = givenCommentDO(article = givenArticleDO(id = articleId))
+        val commentDO1 = givenCommentDO(article = givenArticleDO(id = articleId), deleted = true)
+
+        given(commentRepository.findByArticleId(articleId)).willReturn(listOf(commentDO, commentDO1))
+        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+
+        // when
+        val result = commentService.getCommentsByArticleId(articleId)
+
+        // then
+        verify(commentRepository).findByArticleId(articleId)
+        assertNotNull(result)
+        assertEquals(1, result.size)
+    }
+
+    @Test
     fun `should add a new comment`() {
         // given
         val commentDTO = givenCommentDTO()
