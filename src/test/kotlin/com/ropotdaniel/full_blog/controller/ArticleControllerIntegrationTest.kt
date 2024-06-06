@@ -61,22 +61,22 @@ class ArticleControllerIntegrationTest {
             .andExpect(status().isOk)
     }
 
-//    @Test
-//    fun `should get all articles`() {
-//        val response = ArticleResponse(
-//            listOf(articleDTO).toMutableList(),
-//            0,
-//            10,
-//            1,
-//            1,
-//            true
-//        )
-//
-//        `when`(articleService.getAllArticles(0, 10, "id", "asc")).thenReturn(response)
-//
-//        mockMvc.perform(get("/api/v1/articles"))
-//            .andExpect(status().isOk)
-//    }
+    @Test
+    fun `should get all articles`() {
+        val response = ArticleResponse(
+            listOf(articleDTO).toMutableList(),
+            0,
+            10,
+            1,
+            1,
+            true
+        )
+
+        `when`(articleService.getAllArticles(0, 10, "id", "asc")).thenReturn(response)
+
+        mockMvc.perform(get("/api/v1/articles"))
+            .andExpect(status().isOk)
+    }
 
     @Test
     fun `should create article`() {
