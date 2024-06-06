@@ -1,12 +1,15 @@
 package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
+import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
+import java.time.ZonedDateTime
 
 class ArticleServiceImplTest {
 
@@ -34,7 +37,7 @@ class ArticleServiceImplTest {
         given(articleRepository.findAll()).willReturn(articles)
 
         // when
-        val actualArticles = articleService.getAllArticles()
+        val actualArticles = articleService.getAllArticles(0, 10, "id", "asc")
 
         // then
         assertThat("Returned articles should be the same as the mocked ones", actualArticles, `is`(articles))
