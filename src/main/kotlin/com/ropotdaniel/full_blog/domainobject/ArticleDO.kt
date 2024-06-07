@@ -31,6 +31,9 @@ class ArticleDO(
     @Column(name = "banner_image_url")
     var bannerImageUrl: String,
 
+    @OneToMany(mappedBy = "article", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val comments: List<CommentDO> = mutableListOf(),
+
 ){
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")
