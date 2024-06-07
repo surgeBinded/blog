@@ -46,6 +46,7 @@ class ArticleControllerIntegrationTest {
             "Test Title",
             "Test Content",
             "",
+            mutableListOf(),
             ZonedDateTime.now()
         )
 
