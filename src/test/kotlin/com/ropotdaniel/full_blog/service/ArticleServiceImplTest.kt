@@ -1,20 +1,19 @@
 package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
+import com.ropotdaniel.full_blog.mapper.CommentMapper
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
-import java.time.ZonedDateTime
 
 class ArticleServiceImplTest {
 
     private val articleRepository: ArticleRepository = mock(ArticleRepository::class.java)
-    private val articleService: ArticleService = ArticleServiceImpl(articleRepository)
+    private val commentMapper: CommentMapper = mock(CommentMapper::class.java)
+    private val articleService: ArticleService = ArticleServiceImpl(articleRepository, commentMapper)
     private val articleDO: ArticleDO = mock(ArticleDO::class.java)
 
     @Test

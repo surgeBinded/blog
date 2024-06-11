@@ -4,6 +4,7 @@ import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
+import com.ropotdaniel.full_blog.mapper.CommentMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) : ArticleService {
+class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository, private val commentMapper: CommentMapper) : ArticleService {
 
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
 
@@ -62,7 +63,7 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
             articleDO.title,
             articleDO.content,
             articleDO.bannerImageUrl,
-            articleDO.comments.map { it.id },
+            articleDO.comments.map { comment -> commentMapper.toCommentDTO(comment) },
             articleDO.dateCreated,
         )
     }
