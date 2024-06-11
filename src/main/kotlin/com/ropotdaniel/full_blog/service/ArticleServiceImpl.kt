@@ -62,7 +62,7 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
             articleDO.title,
             articleDO.content,
             articleDO.bannerImageUrl,
-            articleDO.comments,
+            articleDO.comments.map { it.id },
             articleDO.dateCreated,
         )
     }
