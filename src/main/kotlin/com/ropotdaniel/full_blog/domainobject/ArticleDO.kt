@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "article")
-class ArticleDO(
+data class ArticleDO(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,

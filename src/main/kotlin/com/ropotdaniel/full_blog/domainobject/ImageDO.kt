@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "image")
-class ImageDO(
+data class ImageDO(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null,
     @Column(nullable = false) var name: String,
     @Column(nullable = false) var url: String
