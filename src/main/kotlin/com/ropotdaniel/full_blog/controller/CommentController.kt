@@ -5,12 +5,10 @@ import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.service.CommentService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/comments")
-@Validated
 class CommentController(
     @Autowired private val commentService: CommentService
 ) {
