@@ -3,7 +3,6 @@ package com.ropotdaniel.full_blog.service.impl
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
-import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import com.ropotdaniel.full_blog.mapper.CommentMapper
 import com.ropotdaniel.full_blog.service.CommentService
@@ -47,21 +46,6 @@ class CommentServiceImpl(
 
         val createdComment = commentRepository.save(newCommentDO)
         return commentMapper.toCommentDTO(createdComment)
-    }
-
-    // TODO: perhaps this method is unnecessary since it does almost the same thing as addComment
-    @Transactional
-    override fun addReply(parentCommentId: Long, reply: CommentDO): CommentDTO {
-        val parentComment =
-            commentRepository.findById(parentCommentId).orElseThrow { Exception("Parent comment not found") }
-
-        if (parentComment.article.id == reply.article.id) {
-            reply.parentComment = parentComment
-            reply.article = parentComment.article
-            return commentMapper.toCommentDTO(commentRepository.save(reply))
-        } else {
-            throw Exception("Reply article must be the same as the parent comment article")
-        }
     }
 
     override fun likeComment(commentId: Long): CommentDTO {
