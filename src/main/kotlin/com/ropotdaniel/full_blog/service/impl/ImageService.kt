@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.service
+package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.domainobject.ImageDO
 import org.springframework.core.io.ResourceLoader
@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
-
 
 @Service
 class ImageService(private val resourceLoader: ResourceLoader) {

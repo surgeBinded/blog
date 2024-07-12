@@ -1,5 +1,6 @@
 package com.ropotdaniel.full_blog.service
 
+import com.ropotdaniel.full_blog.service.impl.ImageService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock

@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
-import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
+import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_NUMBER

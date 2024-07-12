@@ -6,6 +6,7 @@ import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.service.impl.CommentServiceImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,9 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.given
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 
 @ExtendWith(MockitoExtension::class)
-class CommentServiceTest {
+class CommentServiceImplTest {
 
     private lateinit var commentRepository: CommentRepository
     private lateinit var commentMapper: CommentMapper
@@ -25,27 +29,37 @@ class CommentServiceTest {
     fun setUp() {
         commentRepository = mock(CommentRepository::class.java)
         commentMapper = mock(CommentMapper::class.java)
-        commentService = CommentService(commentRepository, commentMapper)
+        commentService = CommentServiceImpl(commentRepository, commentMapper)
     }
 
     @Test
     fun `should get a list of articles`() {
         // given
         val articleId = 1L
+        val pageNo = 0
+        val pageSize = 10
+        val sortBy = "createdAt"
+        val sortDir = "asc"
         val commentDTO = givenCommentDTO(articleId = articleId)
         val commentDO = givenCommentDO(article = givenArticleDO(id = articleId))
         val commentDO1 = givenCommentDO(article = givenArticleDO(id = articleId), deleted = true)
 
-        given(commentRepository.findByArticleId(articleId)).willReturn(listOf(commentDO, commentDO1))
+        val pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending())
+        val commentsPage = PageImpl(listOf(commentDO, commentDO1), pageable, 2)
+
+        given(commentRepository.findByArticleId(articleId, pageable)).willReturn(commentsPage)
         given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toCommentDTO(commentDO1)).willReturn(commentDTO) // Adjust as needed
 
         // when
-        val result = commentService.getCommentsByArticleId(articleId)
+        val result = commentService.getCommentsByArticleId(articleId, pageNo, pageSize, sortBy, sortDir)
 
         // then
-        verify(commentRepository).findByArticleId(articleId)
+        verify(commentRepository).findByArticleId(articleId, pageable)
         assertNotNull(result)
-        assertEquals(1, result.size)
+        assertEquals(2, result.content.size)
+        assertEquals(2, result.totalElements)
+        assertEquals(1, result.totalPages)
     }
 
     @Test

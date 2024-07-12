@@ -1,8 +1,13 @@
 package com.ropotdaniel.full_blog.controller
 
 import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.service.CommentService
+import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_NUMBER
+import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_SIZE
+import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_BY
+import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_DIRECTION
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -14,8 +19,12 @@ class CommentController(
 ) {
 
     @GetMapping("/article/{articleId}")
-    fun getCommentsByArticleId(@PathVariable articleId: Long): List<CommentDTO> {
-        return commentService.getCommentsByArticleId(articleId)
+    fun getCommentsByArticleId(@PathVariable articleId: Long,
+                               @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER.toString(), required = false) pageNo: Int,
+                               @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE.toString(), required = false) pageSize: Int,
+                               @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) sortBy: String,
+                               @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) sortDir: String): CommentResponse {
+        return commentService.getCommentsByArticleId(articleId, pageNo, pageSize, sortBy, sortDir)
     }
 
     /* POST /api/v1/comments
