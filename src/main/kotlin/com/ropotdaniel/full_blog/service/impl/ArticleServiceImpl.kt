@@ -1,10 +1,11 @@
-package com.ropotdaniel.full_blog.service
+package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
+import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.service.ArticleService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository, private val commentMapper: CommentMapper) : ArticleService {
+class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository, private val commentMapper: CommentMapper) :
+    ArticleService {
 
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
 

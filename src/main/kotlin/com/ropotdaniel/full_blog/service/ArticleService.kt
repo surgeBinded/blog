@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.service
 
-import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
+import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 
 interface ArticleService {

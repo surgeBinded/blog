@@ -3,7 +3,7 @@ package com.ropotdaniel.full_blog.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.ArticleResponse
+import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.junit.jupiter.api.BeforeEach

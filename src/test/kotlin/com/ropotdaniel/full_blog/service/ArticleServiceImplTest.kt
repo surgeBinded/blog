@@ -4,6 +4,7 @@ import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.service.impl.ArticleServiceImpl
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
@@ -12,7 +13,6 @@ import org.mockito.Mockito.mock
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import java.time.ZonedDateTime
 
 class ArticleServiceImplTest {
 
