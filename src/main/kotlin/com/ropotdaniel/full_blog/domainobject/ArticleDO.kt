@@ -27,12 +27,15 @@ data class ArticleDO(
     var content: String,
 
     @Nullable
-    @Lob
     @Column(name = "banner_image_url")
     var bannerImageUrl: String,
 
     @OneToMany(mappedBy = "article", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val comments: List<CommentDO> = mutableListOf(),
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: UserDO
 
 ){
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
