@@ -10,10 +10,10 @@ import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import org.springframework.stereotype.Component
 
 @Component
-class CommentMapper(
-    private val commentRepository: CommentRepository,
-    private val articleRepository: ArticleRepository
-) {
+object CommentMapper {
+    lateinit var commentRepository: CommentRepository
+    lateinit var articleRepository: ArticleRepository
+
     fun toCommentDTO(comment: CommentDO): CommentDTO {
         return CommentDTO(
             id = comment.id,
@@ -42,9 +42,10 @@ class CommentMapper(
             parentComment = parentComment,
             replies = replies,
             content = comment.content,
+            user = article.user,
             likes = comment.likes,
             dislikes = comment.dislikes,
-            deleted = comment.deleted
+            deleted = comment.deleted,
         )
     }
 }
