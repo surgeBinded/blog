@@ -7,19 +7,19 @@ import org.springframework.stereotype.Component
 @Component
 object UserMapper{
 
-    fun toUserDTO(user: UserDO): UserDTO {
+    fun toDTO(user: UserDO): UserDTO {
         return UserDTO(
             id = user.id,
             firstName = user.firstName,
             lastName = user.lastName,
             username = user.username,
             email = user.email,
-            articles = user.articles.map { article -> ArticleMapper.toArticleDTO(article) },
-            comments = user.comments.map { comment -> CommentMapper.toCommentDTO(comment) }
+            articles = user.articles.map { article -> ArticleMapper.toDTO(article) },
+            comments = user.comments.map { comment -> CommentMapper.toDTO(comment) }
         )
     }
 
-    fun toUserDO(user: UserDTO): UserDO {
+    fun toDO(user: UserDTO): UserDO {
         return UserDO(
             id = user.id,
             firstName = user.firstName,
@@ -27,8 +27,8 @@ object UserMapper{
             username = user.username,
             email = user.email,
             password = user.password ?: throw IllegalArgumentException("Password must be provided"),
-            articles = user.articles.map { article -> ArticleMapper.toArticleDO(article) },
-            comments = user.comments.map { comment -> CommentMapper.toCommentDO(comment) }
+            articles = user.articles.map { article -> ArticleMapper.toDO(article) },
+            comments = user.comments.map { comment -> CommentMapper.toDO(comment) }
         )
     }
 }

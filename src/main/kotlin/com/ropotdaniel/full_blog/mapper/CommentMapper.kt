@@ -14,7 +14,7 @@ object CommentMapper {
     lateinit var commentRepository: CommentRepository
     lateinit var articleRepository: ArticleRepository
 
-    fun toCommentDTO(comment: CommentDO): CommentDTO {
+    fun toDTO(comment: CommentDO): CommentDTO {
         return CommentDTO(
             id = comment.id,
             articleId = comment.article.id,
@@ -27,7 +27,7 @@ object CommentMapper {
         )
     }
 
-    fun toCommentDO(comment: CommentDTO): CommentDO {
+    fun toDO(comment: CommentDTO): CommentDO {
         val article = articleRepository.getReferenceById(comment.articleId)
         val parentComment = comment.parentComment?.let {
             commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Parent comment not found") }

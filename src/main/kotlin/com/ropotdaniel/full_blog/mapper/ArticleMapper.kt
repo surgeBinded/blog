@@ -7,27 +7,31 @@ import org.springframework.stereotype.Component
 @Component
 object ArticleMapper {
 
-    fun toArticleDTO(article: ArticleDO): ArticleDTO {
+    fun toDTO(article: ArticleDO): ArticleDTO {
         return ArticleDTO(
             id = article.id,
             title = article.title,
             content = article.content,
-            author = UserMapper.toUserDTO(article.user),
+            author = UserMapper.toDTO(article.user),
             bannerImageUrl = article.bannerImageUrl,
             dateCreated = article.dateCreated,
-            comments = article.comments.map { comment -> CommentMapper.toCommentDTO(comment) }
+            comments = article.comments.map { comment -> CommentMapper.toDTO(comment) }
         )
     }
 
-    fun toArticleDO(article: ArticleDTO): ArticleDO {
+    fun toDO(article: ArticleDTO): ArticleDO {
         return ArticleDO(
             id = article.id,
             title = article.title,
             content = article.content,
-            user = UserMapper.toUserDO(article.author),
+            user = UserMapper.toDO(article.author),
             bannerImageUrl = article.bannerImageUrl,
-            comments = article.comments.map { comment -> CommentMapper.toCommentDO(comment) }
+            comments = article.comments.map { comment -> CommentMapper.toDO(comment) }
         )
+    }
+
+    fun listToDTO(articles: List<ArticleDO>): List<ArticleDTO> {
+        return articles.stream().map(this::toDTO).toList()
     }
 
 }
