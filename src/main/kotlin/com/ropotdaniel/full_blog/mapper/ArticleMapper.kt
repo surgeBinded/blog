@@ -30,7 +30,7 @@ object ArticleMapper {
         )
     }
 
-    fun listToDTO(articles: List<ArticleDO>): List<ArticleDTO> {
+    fun toDTOList(articles: List<ArticleDO>): List<ArticleDTO> {
         return articles.stream().map(this::toDTO).toList()
     }
 
