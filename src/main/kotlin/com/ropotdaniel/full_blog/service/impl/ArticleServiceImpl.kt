@@ -1,11 +1,9 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
-import com.ropotdaniel.full_blog.mapper.CommentMapper
-import com.ropotdaniel.full_blog.mapper.UserMapper
+import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +32,7 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
 
         val pageable = PageRequest.of(pageNo, pageSize, sort)
         val articles = articleRepository.findAll(pageable)
-        val content = mapListToDTO(articles.content)
+        val content = ArticleMapper.toDTOList(articles.content)
 
         return ArticleResponse(content, articles.number, articles.size, articles.totalElements, articles.totalPages, articles.isLast)
     }
@@ -59,20 +57,5 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     override fun deleteArticle(id: Long) {
         logger.info("Deleting article with id: $id")
         articleRepository.deleteById(id)
-    }
-
-    private fun mapToDTO(articleDO: ArticleDO): ArticleDTO {
-        return ArticleDTO(articleDO.id,
-            articleDO.title,
-            articleDO.content,
-            articleDO.bannerImageUrl,
-            articleDO.comments.map { comment -> CommentMapper.toCommentDTO(comment) },
-            UserMapper.toUserDTO(articleDO.user),
-            articleDO.dateCreated,
-        )
-    }
-
-    private fun mapListToDTO(entities: List<ArticleDO>): List<ArticleDTO> {
-        return entities.stream().map(this::mapToDTO).toList()
     }
 }

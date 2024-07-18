@@ -3,8 +3,10 @@ package com.ropotdaniel.full_blog.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
+import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,6 +30,7 @@ class ArticleControllerIntegrationTest {
     @MockBean
     private lateinit var articleService: ArticleService
 
+    private lateinit var user: UserDO
     private lateinit var articleDO: ArticleDO
     private lateinit var articleDTO: ArticleDTO
 
@@ -35,10 +38,22 @@ class ArticleControllerIntegrationTest {
 
     @BeforeEach
     fun setup() {
+        user = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
         articleDO = ArticleDO(1L,
             "Test Title",
             "Test Content",
             "",
+            mutableListOf(),
+            user = user
         )
 
         articleDTO = ArticleDTO(
@@ -47,6 +62,16 @@ class ArticleControllerIntegrationTest {
             "Test Content",
             "",
             mutableListOf(),
+            author = UserDTO(
+                1L,
+                "Test User",
+                "",
+                "",
+                "",
+                "",
+                mutableListOf(),
+                mutableListOf()
+            ),
             ZonedDateTime.now()
         )
 
@@ -85,7 +110,8 @@ class ArticleControllerIntegrationTest {
             id = 2L,
             title = "New Test Title",
             content = "New Test Content",
-            bannerImageUrl = ""
+            bannerImageUrl = "",
+            user = user
         )
 
         `when`(articleService.createArticle(articleDO)).thenReturn(newArticle)
@@ -102,7 +128,8 @@ class ArticleControllerIntegrationTest {
             id = 1L,
             title = "Updated Test Title",
             content = "Updated Test Content",
-            bannerImageUrl = ""
+            bannerImageUrl = "",
+            user = user
         )
 
         `when`(articleService.updateArticle(1, articleDO)).thenReturn(updatedArticle)

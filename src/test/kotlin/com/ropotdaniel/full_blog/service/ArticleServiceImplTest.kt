@@ -1,9 +1,8 @@
 package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
-import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.service.impl.ArticleServiceImpl
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -17,10 +16,8 @@ import org.springframework.data.domain.Sort
 class ArticleServiceImplTest {
 
     private val articleRepository: ArticleRepository = mock(ArticleRepository::class.java)
-    private val commentMapper: CommentMapper = mock(CommentMapper::class.java)
-    private val articleService: ArticleService = ArticleServiceImpl(articleRepository, commentMapper)
+    private val articleService: ArticleService = ArticleServiceImpl(articleRepository)
     private val articleDO: ArticleDO = mock(ArticleDO::class.java)
-    private val articleDTO: ArticleDTO = mock(ArticleDTO::class.java)
 
     @Test
     fun `should return article by id`() {
@@ -53,14 +50,27 @@ class ArticleServiceImplTest {
         assertThat("Should return the correct page size number", actualArticles.pageSize, `is`(0))
     }
 
-    private fun listOfArticles() : List<ArticleDO> {
+    private fun listOfArticles(): List<ArticleDO> {
         val listOfArticleDO = mutableListOf<ArticleDO>()
+
+        val user = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
         for (i in 1..100) {
             val articleDO = ArticleDO(
                 i.toLong(),
                 "Test Title $i",
                 "Test Content $i",
-                ""
+                "",
+                mutableListOf(),
+                user
             )
             listOfArticleDO.add(articleDO)
         }
