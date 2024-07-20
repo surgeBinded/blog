@@ -1,5 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
+import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
@@ -9,7 +10,7 @@ import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_BY
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_DIRECTION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import jakarta.validation.Valid;
+import jakarta.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -17,7 +18,7 @@ import jakarta.validation.Valid;
 class ArticleController @Autowired constructor(private val articleService: ArticleService) {
 
     @GetMapping("/articles/{id}")
-    fun getArticle(@PathVariable id: Long): ArticleDO = articleService.getArticle(id)
+    fun getArticle(@PathVariable id: Long): ArticleDTO = articleService.getArticle(id)
 
 
 /*
@@ -68,7 +69,7 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     */
     @PostMapping("/article")
-    fun createArticle(@Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.createArticle(articleDO)
+    fun createArticle(@Valid @RequestBody articleDTO: ArticleDTO): ArticleDO = articleService.createArticle(articleDTO)
 
     /*
     * updates the article with the given id
