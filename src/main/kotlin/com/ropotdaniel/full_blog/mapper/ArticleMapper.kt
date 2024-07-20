@@ -1,11 +1,14 @@
 package com.ropotdaniel.full_blog.mapper
 
+import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import org.springframework.stereotype.Component
 
 @Component
 object ArticleMapper {
+
+    lateinit var userRepository: UserRepository
 
     fun toDTO(article: ArticleDO): ArticleDTO {
         return ArticleDTO(
