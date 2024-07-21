@@ -1,15 +1,16 @@
 package com.ropotdaniel.full_blog.service
 
+import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 
 interface ArticleService {
 
-    fun getArticle(id: Long): ArticleDO
+    fun getArticle(id: Long): ArticleDTO
 
     fun getAllArticles(pageNo: Int, pageSize: Int, sortBy:String, sortDir:String): ArticleResponse
 
-    fun createArticle(articleDO: ArticleDO): ArticleDO
+    fun createArticle(articleDTO: ArticleDTO): ArticleDO
 
     fun updateArticle(id: Long, modifiedArticleDO: ArticleDO): ArticleDO
 

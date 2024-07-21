@@ -1,6 +1,7 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
+import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.mapper.ArticleMapper
@@ -18,9 +19,9 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
 
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
 
-    override fun getArticle(id: Long): ArticleDO {
+    override fun getArticle(id: Long): ArticleDTO {
         logger.info("Fetching article with id: $id")
-        return articleRepository.getReferenceById(id)
+        return ArticleMapper.toDTO(articleRepository.getReferenceById(id))
     }
 
     override fun getAllArticles(pageNo: Int, pageSize: Int, sortBy:String, sortDir:String): ArticleResponse {
@@ -38,10 +39,10 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     }
 
     @Transactional
-    override fun createArticle(articleDO: ArticleDO): ArticleDO {
-        logger.info("Creating new article with title: ${articleDO.title}")
+    override fun createArticle(articleDTO: ArticleDTO): ArticleDO {
+        logger.info("Creating new article with title: ${articleDTO.title}")
 
-        return articleRepository.save(articleDO)
+        return articleRepository.save(ArticleMapper.toDO(articleDTO))
     }
 
     @Transactional
