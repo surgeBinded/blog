@@ -3,7 +3,7 @@ package com.ropotdaniel.full_blog.domainobject
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 data class UserDO(
 
     @Id

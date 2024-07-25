@@ -1,6 +1,7 @@
 package com.ropotdaniel.full_blog.mapper
 
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
+import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import org.springframework.stereotype.Component
@@ -22,14 +23,12 @@ object ArticleMapper {
         )
     }
 
-    fun toDO(article: ArticleDTO): ArticleDO {
+    fun toDO(article: ArticleCreateDTO): ArticleDO {
         return ArticleDO(
-            id = article.id,
             title = article.title,
             content = article.content,
-            user = UserMapper.toDO(article.author),
-            bannerImageUrl = article.bannerImageUrl,
-            comments = article.comments.map { comment -> CommentMapper.toDO(comment) }
+            user = userRepository.getReferenceById(article.authorId),
+            bannerImageUrl = article.bannerImageUrl ?: ""
         )
     }
 

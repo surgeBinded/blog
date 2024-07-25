@@ -1,5 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
+import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
@@ -18,7 +19,8 @@ import jakarta.validation.Valid
 class ArticleController @Autowired constructor(private val articleService: ArticleService) {
 
     @GetMapping("/articles/{id}")
-    fun getArticle(@PathVariable id: Long): ArticleDTO = articleService.getArticle(id)
+    fun getArticle(@PathVariable id: Long): ArticleDTO
+        = articleService.getArticle(id)
 
 
 /*
@@ -69,7 +71,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     */
     @PostMapping("/article")
-    fun createArticle(@Valid @RequestBody articleDTO: ArticleDTO): ArticleDO = articleService.createArticle(articleDTO)
+    fun createArticle(@Valid @RequestBody articleCreateDTO: ArticleCreateDTO): ArticleDTO
+        = articleService.createArticle(articleCreateDTO)
 
     /*
     * updates the article with the given id
@@ -83,8 +86,10 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     * */
     @PutMapping("/article/{id}")
-    fun updateArticle(@PathVariable id: Long, @Valid @RequestBody articleDO: ArticleDO): ArticleDO = articleService.updateArticle(id, articleDO)
+    fun updateArticle(@PathVariable id: Long, @Valid @RequestBody articleDO: ArticleDO): ArticleDO
+        = articleService.updateArticle(id, articleDO)
 
     @DeleteMapping("/article/{id}")
-    fun deleteArticle(@PathVariable id: Long) = articleService.deleteArticle(id)
+    fun deleteArticle(@PathVariable id: Long)
+        = articleService.deleteArticle(id)
 }

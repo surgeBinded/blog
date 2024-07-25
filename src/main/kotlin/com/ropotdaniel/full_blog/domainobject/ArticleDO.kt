@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 data class ArticleDO(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long = 0,
 
     @Column(nullable = false)
     @field:NotBlank(message = "Title cannot be blank")
