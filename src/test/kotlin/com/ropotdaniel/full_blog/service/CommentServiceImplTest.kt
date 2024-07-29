@@ -4,6 +4,7 @@ import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
+import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import com.ropotdaniel.full_blog.mapper.CommentMapper
 import com.ropotdaniel.full_blog.service.impl.CommentServiceImpl
@@ -48,8 +49,8 @@ class CommentServiceImplTest {
         val commentsPage = PageImpl(listOf(commentDO, commentDO1), pageable, 2)
 
         given(commentRepository.findByArticleId(articleId, pageable)).willReturn(commentsPage)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
-        given(commentMapper.toCommentDTO(commentDO1)).willReturn(commentDTO) // Adjust as needed
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDTO(commentDO1)).willReturn(commentDTO) // Adjust as needed
 
         // when
         val result = commentService.getCommentsByArticleId(articleId, pageNo, pageSize, sortBy, sortDir)
@@ -68,8 +69,8 @@ class CommentServiceImplTest {
         val commentDTO = givenCommentDTO()
         val commentDO = givenCommentDO()
 
-        given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDO(commentDTO)).willReturn(commentDO)
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
         given(commentRepository.save(commentDO)).willReturn(commentDO)
 
         // when
@@ -94,7 +95,7 @@ class CommentServiceImplTest {
             parentComment = parentComment
         )
 
-        given(commentMapper.toCommentDO(commentDTO)).willReturn(commentDO)
+        given(commentMapper.toDO(commentDTO)).willReturn(commentDO)
 
         // when
         assertThrows(WrongArticleException::class.java) {
@@ -114,7 +115,7 @@ class CommentServiceImplTest {
 
         given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
         given(commentRepository.save(commentDO)).willReturn(commentDO)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
 
         // when
         val result = commentService.likeComment(commentId)
@@ -135,7 +136,7 @@ class CommentServiceImplTest {
 
         given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
         given(commentRepository.save(commentDO)).willReturn(commentDO)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
 
         // when
         val result = commentService.dislikeComment(commentId)
@@ -157,7 +158,7 @@ class CommentServiceImplTest {
 
         given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
         given(commentRepository.save(commentDO)).willReturn(commentDO)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
 
         // when
         val result = commentService.editCommentContent(commentId, newContent)
@@ -179,7 +180,7 @@ class CommentServiceImplTest {
 
         given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
         given(commentRepository.save(commentDO)).willReturn(commentDO)
-        given(commentMapper.toCommentDTO(commentDO)).willReturn(commentDTO)
+        given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
 
         // when
         val result = commentService.deleteComment(commentId)
@@ -222,7 +223,9 @@ class CommentServiceImplTest {
             id = id,
             title = title,
             content = content,
-            bannerImageUrl = bannerImageUrl
+            bannerImageUrl = bannerImageUrl,
+            comments = mutableListOf(),
+            user = mock(UserDO::class.java)
         )
     }
 
@@ -243,7 +246,8 @@ class CommentServiceImplTest {
             content = content,
             likes = likes,
             dislikes = dislikes,
-            deleted = deleted
+            deleted = deleted,
+            user = mock(UserDO::class.java)
         )
     }
 }

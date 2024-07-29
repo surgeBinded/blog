@@ -31,40 +31,40 @@ class CommentServiceImpl(
 
         val pageable = PageRequest.of(pageNo, pageSize, sort)
         val comments = commentRepository.findByArticleId(articleId, pageable)
-        val content = comments.content.map { comment -> commentMapper.toCommentDTO(comment) }
+        val content = comments.content.map { comment -> commentMapper.toDTO(comment) }
 
         return CommentResponse(content, comments.number, comments.size, comments.totalElements, comments.totalPages, comments.isLast)
     }
 
     @Transactional
     override fun addComment(comment: CommentDTO): CommentDTO {
-        val newCommentDO = commentMapper.toCommentDO(comment)
+        val newCommentDO = commentMapper.toDO(comment)
 
         if (newCommentDO.parentComment != null && newCommentDO.parentComment?.article?.id != newCommentDO.article.id) {
             throw WrongArticleException("Parent comment article must be the same as the comment article")
         }
 
         val createdComment = commentRepository.save(newCommentDO)
-        return commentMapper.toCommentDTO(createdComment)
+        return commentMapper.toDTO(createdComment)
     }
 
     override fun likeComment(commentId: Long): CommentDTO {
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
         comment.likes += 1
-        return commentMapper.toCommentDTO(commentRepository.save(comment))
+        return commentMapper.toDTO(commentRepository.save(comment))
     }
 
     override fun dislikeComment(commentId: Long): CommentDTO {
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
         comment.dislikes += 1
-        return commentMapper.toCommentDTO(commentRepository.save(comment))
+        return commentMapper.toDTO(commentRepository.save(comment))
     }
 
     @Transactional
-    override fun editCommentContent(commentId: Long, newContent: String): CommentDTO {
+    override fun editCommentContent(commentId: Long, content: String): CommentDTO {
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
-        comment.content = newContent
-        return commentMapper.toCommentDTO(commentRepository.save(comment))
+        comment.content = content
+        return commentMapper.toDTO(commentRepository.save(comment))
     }
 
     @Transactional
@@ -72,6 +72,6 @@ class CommentServiceImpl(
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
         comment.content = "This comment has been deleted."
         comment.deleted = true
-        return commentMapper.toCommentDTO(commentRepository.save(comment))
+        return commentMapper.toDTO(commentRepository.save(comment))
     }
 }

@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 data class ArticleDO(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long = 0,
 
     @Column(nullable = false)
     @field:NotBlank(message = "Title cannot be blank")
@@ -27,12 +27,15 @@ data class ArticleDO(
     var content: String,
 
     @Nullable
-    @Lob
     @Column(name = "banner_image_url")
     var bannerImageUrl: String,
 
     @OneToMany(mappedBy = "article", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val comments: List<CommentDO> = mutableListOf(),
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: UserDO
 
 ){
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

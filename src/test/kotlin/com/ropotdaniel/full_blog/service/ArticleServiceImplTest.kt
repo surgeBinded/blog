@@ -1,26 +1,89 @@
 package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
+import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
+import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
-import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.domainobject.UserDO
+import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.impl.ArticleServiceImpl
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import java.time.ZonedDateTime
 
 class ArticleServiceImplTest {
 
     private val articleRepository: ArticleRepository = mock(ArticleRepository::class.java)
-    private val commentMapper: CommentMapper = mock(CommentMapper::class.java)
-    private val articleService: ArticleService = ArticleServiceImpl(articleRepository, commentMapper)
-    private val articleDO: ArticleDO = mock(ArticleDO::class.java)
-    private val articleDTO: ArticleDTO = mock(ArticleDTO::class.java)
+    private val userRepository: UserRepository = mock(UserRepository::class.java)
+    private lateinit var articleService: ArticleService
+    private lateinit var articleCreateDTO: ArticleCreateDTO
+
+    private lateinit var articleDO: ArticleDO
+    private lateinit var userDO: UserDO
+    private lateinit var articleDTO: ArticleDTO
+
+    @BeforeEach
+    fun setup() {
+        // Ensure ArticleMapper has access to userRepository
+        ArticleMapper.userRepository = userRepository
+
+        articleService = ArticleServiceImpl(articleRepository)
+
+        userDO = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
+        articleDO = ArticleDO(
+            1L,
+            "Test Title",
+            "Test Content",
+            "",
+            mutableListOf(),
+            userDO
+        )
+
+        articleDTO = ArticleDTO(
+            1L,
+            "Test Title",
+            "Test Content",
+            "",
+            mutableListOf(),
+            UserDTO(
+                1L,
+                "Test User",
+                "",
+                "",
+                "",
+                null,
+                mutableListOf(),
+                mutableListOf()
+            ),
+            ZonedDateTime.now(),
+        )
+
+        articleCreateDTO = ArticleCreateDTO(
+            title = "Test Title",
+            content = "Test Content",
+            authorId = 1L,
+            bannerImageUrl = null
+        )
+    }
 
     @Test
     fun `should return article by id`() {
@@ -32,7 +95,7 @@ class ArticleServiceImplTest {
         val actualArticle = articleService.getArticle(articleId)
 
         // then
-        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDO))
+        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDTO))
     }
 
     @Test
@@ -46,21 +109,34 @@ class ArticleServiceImplTest {
         val actualArticles = articleService.getAllArticles(0, 10, "id", "asc")
 
         // then
-        assertThat("Should return the correct id of the first article", actualArticles.content.get(0).id, `is`(1L))
+        assertThat("Should return the correct id of the first article", actualArticles.content[0].id, `is`(1L))
         assertThat("Should return the correct number of pages", actualArticles.totalPages, `is`(0))
         assertThat("Should return the correct amount of articles", actualArticles.totalElements, `is`(0))
         assertThat("Should return the correct page number", actualArticles.pageNo, `is`(0))
         assertThat("Should return the correct page size number", actualArticles.pageSize, `is`(0))
     }
 
-    private fun listOfArticles() : List<ArticleDO> {
+    private fun listOfArticles(): List<ArticleDO> {
         val listOfArticleDO = mutableListOf<ArticleDO>()
+
+        val user = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
         for (i in 1..100) {
             val articleDO = ArticleDO(
                 i.toLong(),
                 "Test Title $i",
                 "Test Content $i",
-                ""
+                "",
+                mutableListOf(),
+                user
             )
             listOfArticleDO.add(articleDO)
         }
@@ -68,15 +144,61 @@ class ArticleServiceImplTest {
     }
 
     @Test
-    fun `should create article`() {
+    fun `should create article successfully`() {
         // given
-        given(articleRepository.save(articleDO)).willReturn(articleDO)
+        val articleCreateDTO = ArticleCreateDTO(
+            title = "New Article",
+            content = "This is a new article.",
+            authorId = 1L,
+            bannerImageUrl = "https://example.com/image.jpg"
+        )
+
+        val userDO = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
+        val articleDO = ArticleDO(
+            1L,
+            "New Article",
+            "This is a new article.",
+            "https://example.com/image.jpg",
+            mutableListOf(),
+            userDO
+        )
+
+        val articleDTO = ArticleDTO(
+            1L,
+            "New Article",
+            "This is a new article.",
+            "https://example.com/image.jpg",
+            mutableListOf(),
+            UserDTO(
+                1L,
+                "Test User",
+                "",
+                "",
+                "",
+                null,
+                mutableListOf(),
+                mutableListOf()
+            ),
+            ZonedDateTime.now()
+        )
+
+        given(userRepository.getReferenceById(1L)).willReturn(userDO)
+        given(articleRepository.save(any(ArticleDO::class.java))).willReturn(articleDO)
 
         // when
-        val actualArticle = articleService.createArticle(articleDO)
+        val actualArticle = articleService.createArticle(articleCreateDTO)
 
         // then
-        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDO))
+        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDTO))
     }
 
     @Test

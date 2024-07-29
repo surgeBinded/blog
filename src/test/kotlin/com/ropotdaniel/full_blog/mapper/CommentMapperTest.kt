@@ -7,40 +7,51 @@ import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.ReplyDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
+import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
-
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(SpringExtension::class)
+@SpringBootTest
 internal class CommentMapperTest {
 
-    @Mock
+    @MockBean
     private lateinit var commentRepository: CommentRepository
 
-    @Mock
+    @MockBean
     private lateinit var articleRepository: ArticleRepository
 
-    @InjectMocks
-    private lateinit var commentMapper: CommentMapper
-
+    private lateinit var user: UserDO
     private lateinit var commentDO: CommentDO
     private lateinit var commentDTO: CommentDTO
 
     @BeforeEach
     fun setUp() {
+        user = UserDO(
+            1L,
+            "Test User",
+            "",
+            "",
+            "",
+            "",
+            mutableListOf()
+        )
+
         val article = ArticleDO(
             id = 1L,
             title = "Test Article",
             content = "Test Content",
             bannerImageUrl = "url",
+            mutableListOf(),
+            user = user
         )
 
         commentDO = CommentDO(
@@ -51,7 +62,8 @@ internal class CommentMapperTest {
             content = "Test content",
             likes = 10,
             dislikes = 2,
-            deleted = false
+            deleted = false,
+            user = user
         )
 
         commentDTO = CommentDTO(
@@ -68,7 +80,7 @@ internal class CommentMapperTest {
 
     @Test
     fun toCommentDTO_Positive() {
-        val dto = commentMapper.toCommentDTO(commentDO)
+        val dto = CommentMapper.toDTO(commentDO)
 
         assertNotNull(dto)
         assertEquals(commentDO.id, dto.id)
@@ -87,10 +99,12 @@ internal class CommentMapperTest {
             title = "Test Article",
             content = "Test Content",
             bannerImageUrl = "url",
+            mutableListOf(),
+            user = user
         )
         `when`(articleRepository.getReferenceById(commentDTO.articleId)).thenReturn(article)
 
-        val comment = commentMapper.toCommentDO(commentDTO)
+        val comment = CommentMapper.toDO(commentDTO)
 
         assertNotNull(comment)
         assertEquals(commentDTO.id, comment.id)
@@ -103,7 +117,7 @@ internal class CommentMapperTest {
     }
 
     @Test
-    fun toCommentDO_Negative_ParentCommentNotFound() {
+    fun toCommentDO_Negative_ParentNotFound() {
         val dtoWithParent = CommentDTO(
             id = 1L,
             articleId = 1L,
@@ -120,12 +134,14 @@ internal class CommentMapperTest {
             title = "Test Article",
             content = "Test Content",
             bannerImageUrl = "url",
+            mutableListOf(),
+            user = user
         )
         `when`(articleRepository.getReferenceById(dtoWithParent.articleId)).thenReturn(article)
         `when`(commentRepository.findById(2L)).thenReturn(Optional.empty())
 
         val exception = assertThrows(CommentNotFoundException::class.java) {
-            commentMapper.toCommentDO(dtoWithParent)
+            CommentMapper.toDO(dtoWithParent)
         }
 
         assertEquals("Parent comment not found", exception.message)
@@ -149,12 +165,14 @@ internal class CommentMapperTest {
             title = "Test Article",
             content = "Test Content",
             bannerImageUrl = "url",
+            mutableListOf(),
+            user = user
         )
         `when`(articleRepository.getReferenceById(dtoWithReplies.articleId)).thenReturn(article)
         `when`(commentRepository.findById(2L)).thenReturn(Optional.empty())
 
         val exception = assertThrows(CommentNotFoundException::class.java) {
-            commentMapper.toCommentDO(dtoWithReplies)
+            CommentMapper.toDO(dtoWithReplies)
         }
 
         assertEquals("Reply not found", exception.message)

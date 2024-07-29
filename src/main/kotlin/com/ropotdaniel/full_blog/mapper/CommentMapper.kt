@@ -10,11 +10,11 @@ import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import org.springframework.stereotype.Component
 
 @Component
-class CommentMapper(
-    private val commentRepository: CommentRepository,
-    private val articleRepository: ArticleRepository
-) {
-    fun toCommentDTO(comment: CommentDO): CommentDTO {
+object CommentMapper {
+    lateinit var commentRepository: CommentRepository
+    lateinit var articleRepository: ArticleRepository
+
+    fun toDTO(comment: CommentDO): CommentDTO {
         return CommentDTO(
             id = comment.id,
             articleId = comment.article.id,
@@ -27,7 +27,7 @@ class CommentMapper(
         )
     }
 
-    fun toCommentDO(comment: CommentDTO): CommentDO {
+    fun toDO(comment: CommentDTO): CommentDO {
         val article = articleRepository.getReferenceById(comment.articleId)
         val parentComment = comment.parentComment?.let {
             commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Parent comment not found") }
@@ -42,9 +42,10 @@ class CommentMapper(
             parentComment = parentComment,
             replies = replies,
             content = comment.content,
+            user = article.user,
             likes = comment.likes,
             dislikes = comment.dislikes,
-            deleted = comment.deleted
+            deleted = comment.deleted,
         )
     }
 }

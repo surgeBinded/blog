@@ -1,10 +1,11 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
+import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
-import com.ropotdaniel.full_blog.mapper.CommentMapper
+import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository, private val commentMapper: CommentMapper) :
+class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) :
     ArticleService {
 
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
 
-    override fun getArticle(id: Long): ArticleDO {
+    override fun getArticle(id: Long): ArticleDTO {
         logger.info("Fetching article with id: $id")
-        return articleRepository.getReferenceById(id)
+        return ArticleMapper.toDTO(articleRepository.getReferenceById(id))
     }
 
     override fun getAllArticles(pageNo: Int, pageSize: Int, sortBy:String, sortDir:String): ArticleResponse {
@@ -33,16 +34,18 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
 
         val pageable = PageRequest.of(pageNo, pageSize, sort)
         val articles = articleRepository.findAll(pageable)
-        val content = mapListToDTO(articles.content)
+        val content = ArticleMapper.toDTOList(articles.content)
 
         return ArticleResponse(content, articles.number, articles.size, articles.totalElements, articles.totalPages, articles.isLast)
     }
 
     @Transactional
-    override fun createArticle(articleDO: ArticleDO): ArticleDO {
-        logger.info("Creating new article with title: ${articleDO.title}")
+    override fun createArticle(articleCreateDTO: ArticleCreateDTO): ArticleDTO {
+        logger.info("Creating new article with title: ${articleCreateDTO.title}")
 
-        return articleRepository.save(articleDO)
+        val savedArticle = articleRepository.save(ArticleMapper.toDO(articleCreateDTO))
+
+        return ArticleMapper.toDTO(savedArticle)
     }
 
     @Transactional
@@ -58,19 +61,5 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     override fun deleteArticle(id: Long) {
         logger.info("Deleting article with id: $id")
         articleRepository.deleteById(id)
-    }
-
-    private fun mapToDTO(articleDO: ArticleDO): ArticleDTO {
-        return ArticleDTO(articleDO.id,
-            articleDO.title,
-            articleDO.content,
-            articleDO.bannerImageUrl,
-            articleDO.comments.map { comment -> commentMapper.toCommentDTO(comment) },
-            articleDO.dateCreated,
-        )
-    }
-
-    private fun mapListToDTO(entities: List<ArticleDO>): List<ArticleDTO> {
-        return entities.stream().map(this::mapToDTO).toList()
     }
 }
