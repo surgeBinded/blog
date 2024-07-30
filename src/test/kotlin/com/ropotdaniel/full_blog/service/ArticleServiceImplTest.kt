@@ -72,7 +72,8 @@ class ArticleServiceImplTest {
                 "",
                 null,
                 mutableListOf(),
-                mutableListOf()
+                mutableListOf(),
+                false
             ),
             ZonedDateTime.now(),
         )
@@ -186,7 +187,8 @@ class ArticleServiceImplTest {
                 "",
                 null,
                 mutableListOf(),
-                mutableListOf()
+                mutableListOf(),
+                false
             ),
             ZonedDateTime.now()
         )

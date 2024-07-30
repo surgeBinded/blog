@@ -72,7 +72,8 @@ class ArticleControllerIntegrationTest {
                 "",
                 "",
                 mutableListOf(),
-                mutableListOf()
+                mutableListOf(),
+                false
             ),
             ZonedDateTime.now()
         )
@@ -128,7 +129,8 @@ class ArticleControllerIntegrationTest {
                 "",
                 "",
                 mutableListOf(),
-                mutableListOf()
+                mutableListOf(),
+                false
             ),
             dateCreated = ZonedDateTime.now(),
             comments = mutableListOf()
