@@ -1,15 +1,18 @@
 package com.ropotdaniel.full_blog.datatransferobject
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.time.ZonedDateTime
 
 data class UserDTO(
-    val id: Long,
-    val firstName: String,
-    val lastName: String,
-    val username: String,
-    val email: String,
+    var id: Long,
+    var firstName: String,
+    var lastName: String,
+    var username: String,
+    var email: String,
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    val password: String? = null,
-    val articles: List<Long>,
-    val comments: List<Long>
+    var password: String? = null,
+    var articles: List<Long>,
+    var comments: List<Long>,
+    var deleted: Boolean,
+    var dateCreated: ZonedDateTime = ZonedDateTime.now()
 )

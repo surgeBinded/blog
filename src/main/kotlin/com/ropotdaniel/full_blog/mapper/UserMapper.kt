@@ -20,7 +20,9 @@ object UserMapper{
             username = user.username,
             email = user.email,
             articles = user.articles.map { article -> article.id },
-            comments = user.comments.map { comment -> comment.id }
+            comments = user.comments.map { comment -> comment.id },
+            deleted = user.deleted,
+            dateCreated = user.dateCreated
         )
     }
 
