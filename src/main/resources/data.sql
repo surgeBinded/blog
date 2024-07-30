@@ -1,9 +1,9 @@
 -- Insert Users
-INSERT INTO users (first_name, last_name, username, password, email) VALUES
-    ('John', 'Doe', 'johndoe', 'password1', 'johndoe@example.com');
+INSERT INTO users (first_name, last_name, username, password, email, deleted) VALUES
+    ('John', 'Doe', 'johndoe', 'password1', 'johndoe@example.com', false);
 
-INSERT INTO users (first_name, last_name, username, password, email) VALUES
-    ('Jane', 'Smith', 'janesmith', 'password2', 'janesmith@example.com');
+INSERT INTO users (first_name, last_name, username, password, email, deleted) VALUES
+    ('Jane', 'Smith', 'janesmith', 'password2', 'janesmith@example.com', false);
 
 -- Insert Articles
 INSERT INTO article (title, content, banner_image_url, date_created, user_id) VALUES
