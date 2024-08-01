@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.ZonedDateTime
 
 data class UserDTO(
-    var id: Long,
     var firstName: String,
     var lastName: String,
     var username: String,
