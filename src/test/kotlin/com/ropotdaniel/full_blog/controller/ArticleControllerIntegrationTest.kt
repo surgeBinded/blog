@@ -65,7 +65,6 @@ class ArticleControllerIntegrationTest {
             "",
             mutableListOf(),
             author = UserDTO(
-                1L,
                 "Test User",
                 "",
                 "",
@@ -122,7 +121,6 @@ class ArticleControllerIntegrationTest {
             content = "New Test Content",
             bannerImageUrl = "",
             author = UserDTO(
-                1L,
                 "Test User",
                 "",
                 "",

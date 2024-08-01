@@ -65,7 +65,6 @@ class ArticleServiceImplTest {
             "",
             mutableListOf(),
             UserDTO(
-                1L,
                 "Test User",
                 "",
                 "",
@@ -180,7 +179,6 @@ class ArticleServiceImplTest {
             "https://example.com/image.jpg",
             mutableListOf(),
             UserDTO(
-                1L,
                 "Test User",
                 "",
                 "",
