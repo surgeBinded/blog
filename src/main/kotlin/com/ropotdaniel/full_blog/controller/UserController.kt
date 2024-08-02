@@ -19,13 +19,11 @@ class UserController @Autowired constructor(private val userService: UserService
     fun registerUser(@Valid @RequestBody userCreateDTO: UserCreateDTO): UserDTO
         = userService.registerUser(userCreateDTO)
 
-    @PutMapping("/users/{id}")
-    fun updateUser(@PathVariable id: Long, userDTO: UserDTO): UserDTO
-        = userService.updateUser(id, userDTO)
+    @PatchMapping("/users/{id}")
+    fun updateUser(@PathVariable id: Long, @RequestBody userCreateDTO: UserCreateDTO): UserDTO
+        = userService.updateUser(id, userCreateDTO)
 
     @DeleteMapping("/users/{id}")
     fun deleteUser(@PathVariable id: Long)
         = userService.deleteUser(id)
-
-
 }

@@ -32,13 +32,14 @@ class UserServiceImpl @Autowired constructor(private val userRepository: UserRep
         return UserMapper.toDTO(userRepository.save(UserMapper.toDO(userCreateDTO)))
     }
 
-    override fun updateUser(id: Long, userDTO: UserDTO): UserDTO {
-        if (!userRepository.findById(id).isPresent) {
-              throw Exception("User not found with id = $id")
-        }
+    override fun updateUser(id: Long, userCreateDTO: UserCreateDTO): UserDTO {
+        val repoUser = userRepository.findById(id).orElseThrow { Exception("User not found with id = $id") }
 
-        val user = UserMapper.toDO(userDTO)
-        val updatedUser = userRepository.save(user)
+        repoUser.firstName = userCreateDTO.firstName
+        repoUser.lastName = userCreateDTO.lastName
+        repoUser.password = userCreateDTO.password
+
+        val updatedUser = userRepository.save(repoUser)
 
         return UserMapper.toDTO(updatedUser)
     }

@@ -23,7 +23,7 @@ data class UserDO(
     val username: String,
 
     @Column(nullable = false)
-    val password: String,
+    var password: String,
 
     @Column(nullable = false)
     val email: String,
@@ -35,7 +35,7 @@ data class UserDO(
     val comments: List<CommentDO> = mutableListOf(),
 
     @Column(nullable = false)
-    val deleted: Boolean = false
+    var deleted: Boolean = false
 ) {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")
