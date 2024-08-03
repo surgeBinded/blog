@@ -2,7 +2,7 @@ package com.ropotdaniel.full_blog.mapper
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
-import com.ropotdaniel.full_blog.datatransferobject.UserCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateUserDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.domainobject.UserDO
 import org.springframework.stereotype.Component
@@ -38,7 +38,7 @@ object UserMapper{
         )
     }
 
-    fun toDO(user: UserCreateDTO): UserDO {
+    fun toDO(user: CreateUserDTO): UserDO {
         return UserDO(
             firstName = user.firstName,
             lastName = user.lastName,

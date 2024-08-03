@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.datatransferobject
 
-data class ArticleCreateDTO(
+data class CreateArticleDTO(
     var title: String,
     var content: String,
     var bannerImageUrl: String?,

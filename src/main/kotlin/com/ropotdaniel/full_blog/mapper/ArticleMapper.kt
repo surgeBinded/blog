@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.mapper
 
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import org.springframework.stereotype.Component
@@ -23,7 +23,7 @@ object ArticleMapper {
         )
     }
 
-    fun toDO(article: ArticleCreateDTO): ArticleDO {
+    fun toDO(article: CreateArticleDTO): ArticleDO {
         return ArticleDO(
             title = article.title,
             content = article.content,

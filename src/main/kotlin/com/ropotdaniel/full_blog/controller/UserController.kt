@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
-import com.ropotdaniel.full_blog.datatransferobject.UserCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateUserDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.service.UserService
 import jakarta.validation.Valid
@@ -16,12 +16,12 @@ class UserController @Autowired constructor(private val userService: UserService
         = userService.getUser(id)
 
     @PostMapping("/users/register")
-    fun registerUser(@Valid @RequestBody userCreateDTO: UserCreateDTO): UserDTO
-        = userService.registerUser(userCreateDTO)
+    fun registerUser(@Valid @RequestBody createUserDTO: CreateUserDTO): UserDTO
+        = userService.registerUser(createUserDTO)
 
     @PatchMapping("/users/{id}")
-    fun updateUser(@PathVariable id: Long, @RequestBody userCreateDTO: UserCreateDTO): UserDTO
-        = userService.updateUser(id, userCreateDTO)
+    fun updateUser(@PathVariable id: Long, @RequestBody createUserDTO: CreateUserDTO): UserDTO
+        = userService.updateUser(id, createUserDTO)
 
     @DeleteMapping("/users/{id}")
     fun deleteUser(@PathVariable id: Long)

@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
@@ -40,10 +40,10 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     }
 
     @Transactional
-    override fun createArticle(articleCreateDTO: ArticleCreateDTO): ArticleDTO {
-        logger.info("Creating new article with title: ${articleCreateDTO.title}")
+    override fun createArticle(createArticleDTO: CreateArticleDTO): ArticleDTO {
+        logger.info("Creating new article with title: ${createArticleDTO.title}")
 
-        val savedArticle = articleRepository.save(ArticleMapper.toDO(articleCreateDTO))
+        val savedArticle = articleRepository.save(ArticleMapper.toDO(createArticleDTO))
 
         return ArticleMapper.toDTO(savedArticle)
     }

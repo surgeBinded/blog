@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
-import com.ropotdaniel.full_blog.datatransferobject.UserCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateUserDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.exceptions.UserAlreadyExistsException
 import com.ropotdaniel.full_blog.mapper.UserMapper
@@ -16,12 +16,12 @@ class UserServiceImpl @Autowired constructor(private val userRepository: UserRep
         return UserMapper.toDTO(userRepository.findById(id).get())
     }
 
-    override fun registerUser(userCreateDTO: UserCreateDTO): UserDTO {
+    override fun registerUser(createUserDTO: CreateUserDTO): UserDTO {
         val existingFields = listOfNotNull(
-            userRepository.existsByUsername(userCreateDTO.username)
-                .takeIf { it }?.let { "Username '${userCreateDTO.username}'" },
-            userRepository.existsByEmail(userCreateDTO.email)
-                .takeIf { it }?.let { "Email '${userCreateDTO.email}'" }
+            userRepository.existsByUsername(createUserDTO.username)
+                .takeIf { it }?.let { "Username '${createUserDTO.username}'" },
+            userRepository.existsByEmail(createUserDTO.email)
+                .takeIf { it }?.let { "Email '${createUserDTO.email}'" }
         )
 
         if (existingFields.isNotEmpty()) {
@@ -29,15 +29,15 @@ class UserServiceImpl @Autowired constructor(private val userRepository: UserRep
             throw UserAlreadyExistsException(message)
         }
 
-        return UserMapper.toDTO(userRepository.save(UserMapper.toDO(userCreateDTO)))
+        return UserMapper.toDTO(userRepository.save(UserMapper.toDO(createUserDTO)))
     }
 
-    override fun updateUser(id: Long, userCreateDTO: UserCreateDTO): UserDTO {
+    override fun updateUser(id: Long, createUserDTO: CreateUserDTO): UserDTO {
         val repoUser = userRepository.findById(id).orElseThrow { Exception("User not found with id = $id") }
 
-        repoUser.firstName = userCreateDTO.firstName
-        repoUser.lastName = userCreateDTO.lastName
-        repoUser.password = userCreateDTO.password
+        repoUser.firstName = createUserDTO.firstName
+        repoUser.lastName = createUserDTO.lastName
+        repoUser.password = createUserDTO.password
 
         val updatedUser = userRepository.save(repoUser)
 

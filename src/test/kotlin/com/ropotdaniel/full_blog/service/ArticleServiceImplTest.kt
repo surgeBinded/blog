@@ -2,7 +2,7 @@ package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
-import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
@@ -26,7 +26,7 @@ class ArticleServiceImplTest {
     private val articleRepository: ArticleRepository = mock(ArticleRepository::class.java)
     private val userRepository: UserRepository = mock(UserRepository::class.java)
     private lateinit var articleService: ArticleService
-    private lateinit var articleCreateDTO: ArticleCreateDTO
+    private lateinit var createArticleDTO: CreateArticleDTO
 
     private lateinit var articleDO: ArticleDO
     private lateinit var userDO: UserDO
@@ -77,7 +77,7 @@ class ArticleServiceImplTest {
             ZonedDateTime.now(),
         )
 
-        articleCreateDTO = ArticleCreateDTO(
+        createArticleDTO = CreateArticleDTO(
             title = "Test Title",
             content = "Test Content",
             authorId = 1L,
@@ -146,7 +146,7 @@ class ArticleServiceImplTest {
     @Test
     fun `should create article successfully`() {
         // given
-        val articleCreateDTO = ArticleCreateDTO(
+        val createArticleDTO = CreateArticleDTO(
             title = "New Article",
             content = "This is a new article.",
             authorId = 1L,
@@ -195,7 +195,7 @@ class ArticleServiceImplTest {
         given(articleRepository.save(any(ArticleDO::class.java))).willReturn(articleDO)
 
         // when
-        val actualArticle = articleService.createArticle(articleCreateDTO)
+        val actualArticle = articleService.createArticle(createArticleDTO)
 
         // then
         assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDTO))

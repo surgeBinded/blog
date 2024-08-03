@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
-import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
@@ -71,8 +71,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     */
     @PostMapping("/article")
-    fun createArticle(@Valid @RequestBody articleCreateDTO: ArticleCreateDTO): ArticleDTO
-        = articleService.createArticle(articleCreateDTO)
+    fun createArticle(@Valid @RequestBody createArticleDTO: CreateArticleDTO): ArticleDTO
+        = articleService.createArticle(createArticleDTO)
 
     /*
     * updates the article with the given id

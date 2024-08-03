@@ -2,7 +2,7 @@ package com.ropotdaniel.full_blog.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.ropotdaniel.full_blog.datatransferobject.ArticleCreateDTO
+import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
@@ -34,7 +34,7 @@ class ArticleControllerIntegrationTest {
     private lateinit var user: UserDO
     private lateinit var articleDO: ArticleDO
     private lateinit var articleDTO: ArticleDTO
-    private lateinit var articleCreateDTO: ArticleCreateDTO
+    private lateinit var createArticleDTO: CreateArticleDTO
 
     private lateinit var mapper: ObjectMapper
 
@@ -77,7 +77,7 @@ class ArticleControllerIntegrationTest {
             ZonedDateTime.now()
         )
 
-        articleCreateDTO = ArticleCreateDTO(
+        createArticleDTO = CreateArticleDTO(
             "Test Title",
             "Test Content",
             "",
@@ -134,7 +134,7 @@ class ArticleControllerIntegrationTest {
             comments = mutableListOf()
         )
 
-        `when`(articleService.createArticle(articleCreateDTO)).thenReturn(newArticle)
+        `when`(articleService.createArticle(createArticleDTO)).thenReturn(newArticle)
 
         mockMvc.perform(post("/api/v1/article")
             .contentType(MediaType.APPLICATION_JSON)
