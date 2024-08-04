@@ -2,8 +2,10 @@ package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
 import com.ropotdaniel.full_blog.datatransferobject.CreateUserDTO
+import com.ropotdaniel.full_blog.datatransferobject.UpdateUserDTO
 import com.ropotdaniel.full_blog.datatransferobject.UserDTO
 import com.ropotdaniel.full_blog.exceptions.UserAlreadyExistsException
+import com.ropotdaniel.full_blog.exceptions.UserNotFoundException
 import com.ropotdaniel.full_blog.mapper.UserMapper
 import com.ropotdaniel.full_blog.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,12 +34,13 @@ class UserServiceImpl @Autowired constructor(private val userRepository: UserRep
         return UserMapper.toDTO(userRepository.save(UserMapper.toDO(createUserDTO)))
     }
 
-    override fun updateUser(id: Long, createUserDTO: CreateUserDTO): UserDTO {
-        val repoUser = userRepository.findById(id).orElseThrow { Exception("User not found with id = $id") }
+    override fun updateUser(id: Long, updateUserDTO: UpdateUserDTO): UserDTO {
+        val repoUser = userRepository.findById(id).orElseThrow { UserNotFoundException("User not found with id = $id") }
 
-        repoUser.firstName = createUserDTO.firstName
-        repoUser.lastName = createUserDTO.lastName
-        repoUser.password = createUserDTO.password
+        updateUserDTO.firstName?.let { repoUser.firstName = it }
+        updateUserDTO.lastName?.let { repoUser.lastName = it }
+        updateUserDTO.password?.let { repoUser.password = it }
+        updateUserDTO.deleted?.let { repoUser.deleted = it }
 
         val updatedUser = userRepository.save(repoUser)
 
