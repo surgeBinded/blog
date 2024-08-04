@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import com.ropotdaniel.full_blog.mapper.CommentMapper

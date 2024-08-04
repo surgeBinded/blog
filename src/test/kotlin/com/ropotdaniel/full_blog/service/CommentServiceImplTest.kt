@@ -1,7 +1,7 @@
 package com.ropotdaniel.full_blog.service
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
-import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.ParentCommentDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.domainobject.UserDO

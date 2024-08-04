@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.datatransferobject.response
 
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
 
 data class CommentResponse(var content: List<CommentDTO>,
                            var pageNo: Int,

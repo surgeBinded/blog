@@ -2,9 +2,9 @@ package com.ropotdaniel.full_blog.mapper
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
-import com.ropotdaniel.full_blog.datatransferobject.ParentCommentDTO
-import com.ropotdaniel.full_blog.datatransferobject.ReplyDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.ParentCommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.ReplyDTO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import org.springframework.stereotype.Component

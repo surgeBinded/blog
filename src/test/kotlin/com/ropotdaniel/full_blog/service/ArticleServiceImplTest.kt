@@ -2,9 +2,9 @@ package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
-import com.ropotdaniel.full_blog.datatransferobject.CreateArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.ArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.UserDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.user.UserDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.mapper.ArticleMapper

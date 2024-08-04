@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.service
 
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 
 interface CommentService {

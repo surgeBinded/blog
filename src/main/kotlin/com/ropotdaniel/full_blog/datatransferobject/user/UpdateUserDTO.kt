@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.datatransferobject
+package com.ropotdaniel.full_blog.datatransferobject.user
 
 data class UpdateUserDTO(
     var firstName: String? = null,

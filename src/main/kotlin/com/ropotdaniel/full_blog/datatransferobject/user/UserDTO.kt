@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.datatransferobject
+package com.ropotdaniel.full_blog.datatransferobject.user
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.ZonedDateTime

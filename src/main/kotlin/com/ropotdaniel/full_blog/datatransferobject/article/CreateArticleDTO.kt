@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.datatransferobject
+package com.ropotdaniel.full_blog.datatransferobject.article
 
 data class CreateArticleDTO(
     var title: String,

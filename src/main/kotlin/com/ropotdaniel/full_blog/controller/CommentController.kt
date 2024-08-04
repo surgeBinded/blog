@@ -1,6 +1,6 @@
 package com.ropotdaniel.full_blog.controller
 
-import com.ropotdaniel.full_blog.datatransferobject.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 import com.ropotdaniel.full_blog.service.CommentService
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_NUMBER

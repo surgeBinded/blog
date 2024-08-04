@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.datatransferobject
+package com.ropotdaniel.full_blog.datatransferobject.user
 
 import jakarta.validation.constraints.NotBlank
 

@@ -1,9 +1,9 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
-import com.ropotdaniel.full_blog.datatransferobject.CreateUserDTO
-import com.ropotdaniel.full_blog.datatransferobject.UpdateUserDTO
-import com.ropotdaniel.full_blog.datatransferobject.UserDTO
+import com.ropotdaniel.full_blog.datatransferobject.user.CreateUserDTO
+import com.ropotdaniel.full_blog.datatransferobject.user.UpdateUserDTO
+import com.ropotdaniel.full_blog.datatransferobject.user.UserDTO
 import com.ropotdaniel.full_blog.exceptions.UserAlreadyExistsException
 import com.ropotdaniel.full_blog.exceptions.UserNotFoundException
 import com.ropotdaniel.full_blog.mapper.UserMapper

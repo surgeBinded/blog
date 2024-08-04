@@ -1,4 +1,4 @@
-package com.ropotdaniel.full_blog.datatransferobject
+package com.ropotdaniel.full_blog.datatransferobject.comment
 
 data class CommentDTO(
     var id: Long,
