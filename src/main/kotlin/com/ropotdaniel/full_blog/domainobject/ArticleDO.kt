@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 data class ArticleDO(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    val id: Long = 0,
 
     @Column(nullable = false)
     @field:NotBlank(message = "Title cannot be blank")
@@ -35,8 +35,10 @@ data class ArticleDO(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: UserDO
+    val user: UserDO,
 
+    @Column(name = "date_updated")
+    var dateUpdated: ZonedDateTime = ZonedDateTime.now()
 ){
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")

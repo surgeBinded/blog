@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS article (
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
     banner_image_url VARCHAR(250),
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)

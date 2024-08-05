@@ -10,5 +10,6 @@ data class ArticleDTO(var id: Long,
                       var bannerImageUrl: String,
                       var comments: List<CommentDTO>,
                       var author: UserDTO,
+                      var dateUpdated: ZonedDateTime?,
                       var dateCreated: ZonedDateTime
 )

@@ -18,6 +18,7 @@ object ArticleMapper {
             content = article.content,
             author = UserMapper.toDTO(article.user),
             bannerImageUrl = article.bannerImageUrl,
+            dateUpdated = article.dateUpdated,
             dateCreated = article.dateCreated,
             comments = article.comments.map { comment -> CommentMapper.toDTO(comment) }
         )
