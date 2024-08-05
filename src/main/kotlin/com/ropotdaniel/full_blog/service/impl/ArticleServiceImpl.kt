@@ -1,10 +1,11 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
-import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.UpdateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
-import com.ropotdaniel.full_blog.domainobject.ArticleDO
+import com.ropotdaniel.full_blog.exceptions.UserNotFoundException
 import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.slf4j.LoggerFactory
@@ -21,13 +22,10 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
 
     override fun getArticle(id: Long): ArticleDTO {
-        logger.info("Fetching article with id: $id")
         return ArticleMapper.toDTO(articleRepository.getReferenceById(id))
     }
 
-    override fun getAllArticles(pageNo: Int, pageSize: Int, sortBy:String, sortDir:String): ArticleResponse {
-        logger.info("Fetching all articles")
-
+    override fun getAllArticles(pageNo: Int, pageSize: Int, sortBy: String, sortDir: String): ArticleResponse {
         val sort = Sort.by(sortBy).let {
             if (sortDir.equals(Sort.Direction.ASC.name, ignoreCase = true)) it.ascending() else it.descending()
         }
@@ -36,7 +34,14 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
         val articles = articleRepository.findAll(pageable)
         val content = ArticleMapper.toDTOList(articles.content)
 
-        return ArticleResponse(content, articles.number, articles.size, articles.totalElements, articles.totalPages, articles.isLast)
+        return ArticleResponse(
+            content,
+            articles.number,
+            articles.size,
+            articles.totalElements,
+            articles.totalPages,
+            articles.isLast
+        )
     }
 
     @Transactional
@@ -49,17 +54,23 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     }
 
     @Transactional
-    override fun updateArticle(id: Long, modifiedArticleDO: ArticleDO): ArticleDO {
-        logger.info("Updating article with id: $id")
-        val article = articleRepository.getReferenceById(id)
-        article.bannerImageUrl = modifiedArticleDO.bannerImageUrl
-        article.content = modifiedArticleDO.content
-        return article
+    override fun updateArticle(id: Long, modifiedArticleDO: UpdateArticleDTO): ArticleDTO {
+        val repoArticle =
+            articleRepository.findById(id).orElseThrow { UserNotFoundException("Article not found with id = $id") }
+
+        modifiedArticleDO.title?.let { repoArticle.title = it }
+        modifiedArticleDO.content?.let { repoArticle.content = it }
+        modifiedArticleDO.bannerImageUrl?.let { repoArticle.bannerImageUrl = it }
+        modifiedArticleDO.dateUpdated.let { repoArticle.dateUpdated = it }
+
+        val updatedArticle = articleRepository.save(repoArticle)
+
+        return ArticleMapper.toDTO(updatedArticle)
     }
 
     @Transactional
     override fun deleteArticle(id: Long) {
         logger.info("Deleting article with id: $id")
-        articleRepository.deleteById(id)
+        articleRepository.deleteById(id).let { throw UserNotFoundException("Article not found with id = $id") }
     }
 }

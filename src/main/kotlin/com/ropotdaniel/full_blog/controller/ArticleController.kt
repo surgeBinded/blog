@@ -2,8 +2,8 @@ package com.ropotdaniel.full_blog.controller
 
 import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.UpdateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
-import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_NUMBER
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_SIZE
@@ -86,8 +86,9 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     * */
     @PutMapping("/article/{id}")
-    fun updateArticle(@PathVariable id: Long, @Valid @RequestBody articleDO: ArticleDO): ArticleDO
-        = articleService.updateArticle(id, articleDO)
+    fun updateArticle(@PathVariable id: Long,
+                      @Valid @RequestBody updateArticleDTO: UpdateArticleDTO): ArticleDTO
+        = articleService.updateArticle(id, updateArticleDTO)
 
     @DeleteMapping("/article/{id}")
     fun deleteArticle(@PathVariable id: Long)
