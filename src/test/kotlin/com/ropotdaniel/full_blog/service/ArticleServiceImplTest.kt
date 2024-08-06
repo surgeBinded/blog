@@ -4,6 +4,7 @@ import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.UserRepository
 import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.UpdateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.user.UserDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.UserDO
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import java.time.ZonedDateTime
+import java.util.Optional
 
 class ArticleServiceImplTest {
 
@@ -28,6 +30,7 @@ class ArticleServiceImplTest {
     private lateinit var articleService: ArticleService
     private lateinit var createArticleDTO: CreateArticleDTO
 
+    private lateinit var articleDOOptional: Optional<ArticleDO>
     private lateinit var articleDO: ArticleDO
     private lateinit var userDO: UserDO
     private lateinit var articleDTO: ArticleDTO
@@ -58,6 +61,17 @@ class ArticleServiceImplTest {
             userDO
         )
 
+        articleDOOptional = Optional.of(
+            ArticleDO(
+                1L,
+                "Test Title",
+                "Test Content",
+                "",
+                mutableListOf(),
+                userDO
+            )
+        )
+
         articleDTO = ArticleDTO(
             1L,
             "Test Title",
@@ -75,6 +89,7 @@ class ArticleServiceImplTest {
                 false
             ),
             ZonedDateTime.now(),
+            ZonedDateTime.now()
         )
 
         createArticleDTO = CreateArticleDTO(
@@ -119,16 +134,6 @@ class ArticleServiceImplTest {
     private fun listOfArticles(): List<ArticleDO> {
         val listOfArticleDO = mutableListOf<ArticleDO>()
 
-        val user = UserDO(
-            1L,
-            "Test User",
-            "",
-            "",
-            "",
-            "",
-            mutableListOf()
-        )
-
         for (i in 1..100) {
             val articleDO = ArticleDO(
                 i.toLong(),
@@ -136,7 +141,7 @@ class ArticleServiceImplTest {
                 "Test Content $i",
                 "",
                 mutableListOf(),
-                user
+                userDO
             )
             listOfArticleDO.add(articleDO)
         }
@@ -146,53 +151,8 @@ class ArticleServiceImplTest {
     @Test
     fun `should create article successfully`() {
         // given
-        val createArticleDTO = CreateArticleDTO(
-            title = "New Article",
-            content = "This is a new article.",
-            authorId = 1L,
-            bannerImageUrl = "https://example.com/image.jpg"
-        )
-
-        val userDO = UserDO(
-            1L,
-            "Test User",
-            "",
-            "",
-            "",
-            "",
-            mutableListOf()
-        )
-
-        val articleDO = ArticleDO(
-            1L,
-            "New Article",
-            "This is a new article.",
-            "https://example.com/image.jpg",
-            mutableListOf(),
-            userDO
-        )
-
-        val articleDTO = ArticleDTO(
-            1L,
-            "New Article",
-            "This is a new article.",
-            "https://example.com/image.jpg",
-            mutableListOf(),
-            UserDTO(
-                "Test User",
-                "",
-                "",
-                "",
-                null,
-                mutableListOf(),
-                mutableListOf(),
-                false
-            ),
-            ZonedDateTime.now()
-        )
-
         given(userRepository.getReferenceById(1L)).willReturn(userDO)
-        given(articleRepository.save(any(ArticleDO::class.java))).willReturn(articleDO)
+        given(articleRepository.save(any(ArticleDO::class.java))).willReturn(articleDOOptional.get())
 
         // when
         val actualArticle = articleService.createArticle(createArticleDTO)
@@ -204,17 +164,19 @@ class ArticleServiceImplTest {
     @Test
     fun `should update article`() {
         // given
-        val modifiedArticleDO = mock(ArticleDO::class.java)
+        val modifiedArticleDO = mock(UpdateArticleDTO::class.java)
         val articleId = 1L
-        given(articleRepository.getReferenceById(articleId)).willReturn(articleDO)
+        given(articleRepository.findById(articleId)).willReturn(articleDOOptional)
         given(modifiedArticleDO.bannerImageUrl).willReturn("new banner image url")
         given(modifiedArticleDO.content).willReturn("new content")
-        given(modifiedArticleDO.dateCreated).willReturn(null)
+        given(modifiedArticleDO.dateUpdated).willReturn(ZonedDateTime.now())
+
+        given(articleRepository.save(articleDOOptional.get())).willReturn(articleDOOptional.get())
 
         // when
         val actualArticle = articleService.updateArticle(articleId, modifiedArticleDO)
 
         // then
-        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(articleDO))
+        assertThat("Returned article should be the same as the mocked one", actualArticle, `is`(ArticleMapper.toDTO(articleDOOptional.get())))
     }
 }
