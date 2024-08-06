@@ -2,11 +2,11 @@ package com.ropotdaniel.full_blog.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
-import com.ropotdaniel.full_blog.datatransferobject.user.UserDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
+import com.ropotdaniel.full_blog.datatransferobject.article.UpdateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
-import com.ropotdaniel.full_blog.domainobject.ArticleDO
+import com.ropotdaniel.full_blog.datatransferobject.user.UserDTO
 import com.ropotdaniel.full_blog.domainobject.UserDO
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.junit.jupiter.api.BeforeEach
@@ -32,7 +32,7 @@ class ArticleControllerIntegrationTest {
     private lateinit var articleService: ArticleService
 
     private lateinit var user: UserDO
-    private lateinit var articleDO: ArticleDO
+    private lateinit var updateArticleDTO: UpdateArticleDTO
     private lateinit var articleDTO: ArticleDTO
     private lateinit var createArticleDTO: CreateArticleDTO
 
@@ -48,14 +48,6 @@ class ArticleControllerIntegrationTest {
             "",
             "",
             mutableListOf()
-        )
-
-        articleDO = ArticleDO(1L,
-            "Test Title",
-            "Test Content",
-            "",
-            mutableListOf(),
-            user = user
         )
 
         articleDTO = ArticleDTO(
@@ -74,6 +66,7 @@ class ArticleControllerIntegrationTest {
                 mutableListOf(),
                 false
             ),
+            ZonedDateTime.now(),
             ZonedDateTime.now()
         )
 
@@ -82,6 +75,13 @@ class ArticleControllerIntegrationTest {
             "Test Content",
             "",
             1L
+        )
+
+        updateArticleDTO = UpdateArticleDTO(
+            title = "Updated Test Title",
+            content = "Updated Test Content",
+            bannerImageUrl = "",
+            dateUpdated = ZonedDateTime.now(),
         )
 
         mapper = ObjectMapper()
@@ -130,33 +130,31 @@ class ArticleControllerIntegrationTest {
                 mutableListOf(),
                 false
             ),
+            dateUpdated = ZonedDateTime.now(),
             dateCreated = ZonedDateTime.now(),
             comments = mutableListOf()
         )
 
         `when`(articleService.createArticle(createArticleDTO)).thenReturn(newArticle)
 
-        mockMvc.perform(post("/api/v1/article")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(newArticle)))
+        mockMvc.perform(
+            post("/api/v1/article")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(newArticle))
+        )
             .andExpect(status().isOk)
     }
 
     @Test
     fun `should update article`() {
-        val updatedArticle = ArticleDO(
-            id = 1L,
-            title = "Updated Test Title",
-            content = "Updated Test Content",
-            bannerImageUrl = "",
-            user = user
+
+        `when`(articleService.updateArticle(1, updateArticleDTO)).thenReturn(articleDTO)
+
+        mockMvc.perform(
+            put("/api/v1/article/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(articleDTO))
         )
-
-        `when`(articleService.updateArticle(1, articleDO)).thenReturn(updatedArticle)
-
-        mockMvc.perform(put("/api/v1/article/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(updatedArticle)))
             .andExpect(status().isOk)
     }
 
