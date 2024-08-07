@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS comment (
     likes INT NOT NULL DEFAULT 0,
     dislikes INT NOT NULL DEFAULT 0,
     deleted BOOLEAN NOT NULL DEFAULT FALSE,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT NOT NULL,
     CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES article(id),
     CONSTRAINT fk_parent_comment FOREIGN KEY (parent_comment_id) REFERENCES comment(id),

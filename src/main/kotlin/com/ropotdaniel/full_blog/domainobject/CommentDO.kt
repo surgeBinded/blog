@@ -1,6 +1,9 @@
 package com.ropotdaniel.full_blog.domainobject
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
+import org.springframework.format.annotation.DateTimeFormat
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "comment")
@@ -10,11 +13,11 @@ data class CommentDO(
 
     @ManyToOne
     @JoinColumn(name = "article_id")
-    var article: ArticleDO,
+    val article: ArticleDO,
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
-    var parentComment: CommentDO? = null,
+    val parentComment: CommentDO? = null,
 
     @OneToMany(mappedBy = "parentComment", cascade = [CascadeType.ALL])
     val replies: List<CommentDO> = mutableListOf(),
@@ -34,4 +37,9 @@ data class CommentDO(
 
     @Column(nullable = false)
     var deleted: Boolean = false
-)
+) {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(nullable = false, name = "date_created")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    val dateCreated: ZonedDateTime = ZonedDateTime.now()
+}

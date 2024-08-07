@@ -23,7 +23,8 @@ object CommentMapper {
             content = comment.content,
             likes = comment.likes,
             dislikes = comment.dislikes,
-            deleted = comment.deleted
+            deleted = comment.deleted,
+            dateCreated = comment.dateCreated
         )
     }
 
