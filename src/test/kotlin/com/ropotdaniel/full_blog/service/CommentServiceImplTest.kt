@@ -2,6 +2,7 @@ package com.ropotdaniel.full_blog.service
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.comment.ParentCommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.UpdateCommentDTO
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.domainobject.UserDO
@@ -18,6 +19,7 @@ import org.mockito.kotlin.given
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import java.time.ZonedDateTime
 
 @ExtendWith(MockitoExtension::class)
 class CommentServiceImplTest {
@@ -152,22 +154,23 @@ class CommentServiceImplTest {
     fun `should edit the comment content`() {
         // given
         val commentId = 1L
-        val newContent = "New content"
+//        val newContent = "New content"
+        val updateCommentDTO = UpdateCommentDTO(content = "New content", deleted = false)
         val commentDO = givenCommentDO()
-        val commentDTO = givenCommentDTO(content = newContent)
+        val commentDTO = givenCommentDTO()
 
         given(commentRepository.findById(commentId)).willReturn(java.util.Optional.of(commentDO))
         given(commentRepository.save(commentDO)).willReturn(commentDO)
         given(commentMapper.toDTO(commentDO)).willReturn(commentDTO)
 
         // when
-        val result = commentService.editCommentContent(commentId, newContent)
+        val result = commentService.editComment(commentId, updateCommentDTO)
 
         // then
         verify(commentRepository).findById(commentId)
         verify(commentRepository).save(commentDO)
         assertNotNull(result)
-        assertEquals(newContent, result.content)
+        assertEquals(updateCommentDTO, result.content)
     }
 
     @Test
@@ -209,7 +212,8 @@ class CommentServiceImplTest {
             content = content,
             likes = likes,
             dislikes = dislikes,
-            deleted = deleted
+            deleted = deleted,
+            dateCreated = ZonedDateTime.now()
         )
     }
 

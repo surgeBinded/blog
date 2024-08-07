@@ -17,6 +17,7 @@ import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.time.ZonedDateTime
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -74,7 +75,8 @@ internal class CommentMapperTest {
             content = "Test content",
             likes = 10,
             dislikes = 2,
-            deleted = false
+            deleted = false,
+            dateCreated = ZonedDateTime.now()
         )
     }
 
@@ -126,7 +128,8 @@ internal class CommentMapperTest {
             content = "Test content",
             likes = 10,
             dislikes = 2,
-            deleted = false
+            deleted = false,
+            dateCreated = ZonedDateTime.now()
         )
 
         val article = ArticleDO(
@@ -157,7 +160,8 @@ internal class CommentMapperTest {
             content = "Test content",
             likes = 10,
             dislikes = 2,
-            deleted = false
+            deleted = false,
+            dateCreated = ZonedDateTime.now()
         )
 
         val article = ArticleDO(
