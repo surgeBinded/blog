@@ -1,6 +1,7 @@
 package com.ropotdaniel.full_blog.controller
 
 import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.UpdateCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 import com.ropotdaniel.full_blog.service.CommentService
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_PAGE_NUMBER
@@ -97,8 +98,8 @@ class CommentController(
     * }
      */
     @PatchMapping("/{commentId}")
-    fun editCommentContent(@PathVariable commentId: Long, @RequestBody newContent: String): CommentDTO {
-        return commentService.editCommentContent(commentId, newContent)
+    fun editCommentContent(@PathVariable commentId: Long, @RequestBody updateCommentDTO: UpdateCommentDTO): CommentDTO {
+        return commentService.editComment(commentId, updateCommentDTO)
     }
 
     @DeleteMapping("/{commentId}")

@@ -2,6 +2,7 @@ package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.UpdateCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 import com.ropotdaniel.full_blog.exceptions.WrongArticleException
 import com.ropotdaniel.full_blog.mapper.CommentMapper
@@ -40,7 +41,7 @@ class CommentServiceImpl(
     override fun addComment(comment: CommentDTO): CommentDTO {
         val newCommentDO = commentMapper.toDO(comment)
 
-        if (newCommentDO.parentComment != null && newCommentDO.parentComment?.article?.id != newCommentDO.article.id) {
+        if (newCommentDO.parentComment != null && newCommentDO.parentComment.article.id != newCommentDO.article.id) {
             throw WrongArticleException("Parent comment article must be the same as the comment article")
         }
 
@@ -61,9 +62,12 @@ class CommentServiceImpl(
     }
 
     @Transactional
-    override fun editCommentContent(commentId: Long, content: String): CommentDTO {
+    override fun editComment(commentId: Long, updateCommentDTO: UpdateCommentDTO): CommentDTO {
         val comment = commentRepository.findById(commentId).orElseThrow { Exception(COMMENT_NOT_FOUND) }
-        comment.content = content
+
+        updateCommentDTO.content?.let { comment.content = it }
+        updateCommentDTO.deleted?.let { comment.deleted = it }
+
         return commentMapper.toDTO(commentRepository.save(comment))
     }
 

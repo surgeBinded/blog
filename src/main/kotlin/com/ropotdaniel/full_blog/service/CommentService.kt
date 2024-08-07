@@ -1,6 +1,7 @@
 package com.ropotdaniel.full_blog.service
 
 import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
+import com.ropotdaniel.full_blog.datatransferobject.comment.UpdateCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.CommentResponse
 
 interface CommentService {
@@ -8,6 +9,6 @@ interface CommentService {
     fun addComment(comment: CommentDTO): CommentDTO
     fun likeComment(commentId: Long): CommentDTO
     fun dislikeComment(commentId: Long): CommentDTO
-    fun editCommentContent(commentId: Long, content: String): CommentDTO
+    fun editComment(commentId: Long, updateCommentDTO: UpdateCommentDTO): CommentDTO
     fun deleteComment(commentId: Long): CommentDTO
 }
