@@ -1,0 +1,46 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "configMigration": true,
+  "timezone": "Europe/Berlin",
+  "schedule": ["before 5am every weekday"],
+  "dependencyDashboardTitle": "Renovate Dependency Dashboard",
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "prCreation": "immediate",
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "envoyproxy/envoy-distroless",
+      "fileMatch": [
+        "^\\.github/workflows/.*\\.yml$"
+      ],
+      "matchStrings": [
+        "PROXY_IMAGE: envoyproxy/envoy-distroless:(?<currentValue>.*)"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "groupName": "Spring Framework",
+      "matchPackagePrefixes": [
+        "org.springframework.boot:"
+      ],
+      "separateMinorPatch": true,
+      "bumpVersion": "patch",
+      "versioning": "maven"
+    }
+  ]
+}
