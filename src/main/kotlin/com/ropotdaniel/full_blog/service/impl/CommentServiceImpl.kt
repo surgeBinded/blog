@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import java.time.ZonedDateTime
 
 private const val COMMENT_NOT_FOUND = "Comment not found"
 
@@ -67,6 +68,7 @@ class CommentServiceImpl(
 
         updateCommentDTO.content?.let { comment.content = it }
         updateCommentDTO.deleted?.let { comment.deleted = it }
+        comment.dateUpdated = ZonedDateTime.now()
 
         return commentMapper.toDTO(commentRepository.save(comment))
     }
