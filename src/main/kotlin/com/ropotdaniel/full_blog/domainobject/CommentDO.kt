@@ -36,7 +36,10 @@ data class CommentDO(
     var dislikes: Int = 0,
 
     @Column(nullable = false)
-    var deleted: Boolean = false
+    var deleted: Boolean = false,
+
+    @Column(name = "date_updated")
+    var dateUpdated: ZonedDateTime = ZonedDateTime.now()
 ) {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")
