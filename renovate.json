@@ -5,7 +5,9 @@
   ],
   "configMigration": true,
   "timezone": "Europe/Berlin",
-  "schedule": ["before 5am every weekday"],
+  "schedule": [
+    "before 5am every weekday"
+  ],
   "dependencyDashboardTitle": "Renovate Dependency Dashboard",
   "major": {
     "dependencyDashboardApproval": true
@@ -35,12 +37,12 @@
   "packageRules": [
     {
       "groupName": "Spring Framework",
-      "matchPackagePrefixes": [
-        "org.springframework.boot:"
-      ],
       "separateMinorPatch": true,
       "bumpVersion": "patch",
-      "versioning": "maven"
+      "versioning": "maven",
+      "matchPackageNames": [
+        "org.springframework.boot:{/,}**"
+      ]
     }
   ]
 }
