@@ -16,7 +16,7 @@
     <description>full_blog</description>
     <properties>
         <java.version>21</java.version>
-        <kotlin.version>1.9.23</kotlin.version>
+        <kotlin.version>1.9.25</kotlin.version>
         <testcontainers.version>1.19.7</testcontainers.version>
     </properties>
     <dependencies>
