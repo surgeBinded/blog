@@ -6,8 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.ZonedDateTime
 
 @Entity
-@Table(name = "users")
-data class UserDO(
+@Table(name = "authors")
+data class AuthorDO(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ data class UserDO(
     @Column(nullable = false)
     val email: String,
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val articles: List<ArticleDO> = mutableListOf(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val comments: List<CommentDO> = mutableListOf(),
 
     @Column(nullable = false)

@@ -34,8 +34,8 @@ data class ArticleDO(
     val comments: List<CommentDO> = mutableListOf(),
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: UserDO,
+    @JoinColumn(name = "author_id")
+    val author: AuthorDO,
 
     @Column(name = "date_updated")
     var dateUpdated: ZonedDateTime = ZonedDateTime.now()

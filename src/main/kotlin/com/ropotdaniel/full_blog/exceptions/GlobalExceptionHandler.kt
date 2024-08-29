@@ -20,12 +20,12 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.message)
     }
 
-    @ExceptionHandler(UserAlreadyExistsException::class)
-    fun handleUserAlreadyExistsException(ex: UserAlreadyExistsException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(AuthorAlreadyExistsException::class)
+    fun handleAuthorAlreadyExistsException(ex: AuthorAlreadyExistsException): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(
             status = HttpStatus.CONFLICT.value(),
-            message = ex.message ?: "User already exists",
-            details = listOf(ex.message ?: "User already exists")
+            message = ex.message ?: "Author already exists",
+            details = listOf(ex.message ?: "Author already exists")
         )
         return ResponseEntity(errorResponse, HttpStatus.CONFLICT)
     }
@@ -44,13 +44,13 @@ class GlobalExceptionHandler {
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(UserNotFoundException::class)
-    fun handleUserNotFoundException(ex: UserNotFoundException): ResponseEntity<String> {
+    @ExceptionHandler(AuthorNotFoundException::class)
+    fun handleAuthorNotFoundException(ex: AuthorNotFoundException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
     }
 
     @ExceptionHandler(ArticleNotFoundException::class)
-    fun handleUserNotFoundException(ex: ArticleNotFoundException): ResponseEntity<String> {
+    fun handleAuthorNotFoundException(ex: ArticleNotFoundException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
     }
 }

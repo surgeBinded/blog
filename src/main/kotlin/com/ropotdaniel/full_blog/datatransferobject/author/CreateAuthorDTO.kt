@@ -1,8 +1,8 @@
-package com.ropotdaniel.full_blog.datatransferobject.user
+package com.ropotdaniel.full_blog.datatransferobject.author
 
 import jakarta.validation.constraints.NotBlank
 
-data class CreateUserDTO(
+data class CreateAuthorDTO(
     @field:NotBlank(message = "First name must not be blank")
     var firstName: String,
 

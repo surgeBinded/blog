@@ -1,9 +1,9 @@
-package com.ropotdaniel.full_blog.datatransferobject.user
+package com.ropotdaniel.full_blog.datatransferobject.author
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.ZonedDateTime
 
-data class UserDTO(
+data class AuthorDTO(
     var firstName: String,
     var lastName: String,
     var username: String,

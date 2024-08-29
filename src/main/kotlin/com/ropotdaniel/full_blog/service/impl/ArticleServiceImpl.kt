@@ -5,7 +5,7 @@ import com.ropotdaniel.full_blog.datatransferobject.article.ArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.CreateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.article.UpdateArticleDTO
 import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
-import com.ropotdaniel.full_blog.exceptions.UserNotFoundException
+import com.ropotdaniel.full_blog.exceptions.ArticleNotFoundException
 import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.ArticleService
 import org.slf4j.LoggerFactory
@@ -56,7 +56,7 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     @Transactional
     override fun updateArticle(id: Long, modifiedArticleDO: UpdateArticleDTO): ArticleDTO {
         val repoArticle =
-            articleRepository.findById(id).orElseThrow { UserNotFoundException("Article not found with id = $id") }
+            articleRepository.findById(id).orElseThrow { ArticleNotFoundException("Article not found with id = $id") }
 
         modifiedArticleDO.title?.let { repoArticle.title = it }
         modifiedArticleDO.content?.let { repoArticle.content = it }
@@ -71,6 +71,6 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     @Transactional
     override fun deleteArticle(id: Long) {
         logger.info("Deleting article with id: $id")
-        articleRepository.deleteById(id).let { throw UserNotFoundException("Article not found with id = $id") }
+        articleRepository.deleteById(id).let { throw ArticleNotFoundException("Article not found with id = $id") }
     }
 }

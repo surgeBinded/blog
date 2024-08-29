@@ -43,7 +43,7 @@ object CommentMapper {
             parentComment = parentComment,
             replies = replies,
             content = comment.content,
-            user = article.user,
+            author = article.author,
             likes = comment.likes,
             dislikes = comment.dislikes,
             deleted = comment.deleted,

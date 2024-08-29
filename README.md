@@ -1,6 +1,6 @@
 # Full stack application with Kotlin and React.js
 
-A full-stack application that provides a CRUD API for creating Articles, Comments and Users. 
+A full-stack application that provides a CRUD API for creating Articles, Comments and Authors. 
 The application is built with: 
 
 - Kotlin
@@ -24,6 +24,6 @@ The application is built with the intention of practicing building complex syste
 
 - `http://localhost:8181/api/v1/comments/article/1` - Get all comments for the article with id 1
 
-- `http://localhost:8181/api/v1/users/1` - Get user with id 1
+- `http://localhost:8181/api/v1/authors/1` - Get author with id 1
 
 For better API documentation, I plan to introduce Swagger later.

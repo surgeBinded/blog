@@ -1,5 +1,5 @@
--- Create user table
-CREATE TABLE IF NOT EXISTS users (
+-- Create author table
+CREATE TABLE IF NOT EXISTS authors (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS article (
     banner_image_url VARCHAR(250),
     date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+    author_id INT NOT NULL,
+    CONSTRAINT fk_author FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
 -- Create comment table
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS comment (
     deleted BOOLEAN NOT NULL DEFAULT FALSE,
     date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL,
+    author_id INT NOT NULL,
     CONSTRAINT fk_article FOREIGN KEY (article_id) REFERENCES article(id),
     CONSTRAINT fk_parent_comment FOREIGN KEY (parent_comment_id) REFERENCES comment(id),
-    CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_comment_author FOREIGN KEY (author_id) REFERENCES authors(id)
 );

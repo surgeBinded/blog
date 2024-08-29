@@ -1,6 +1,6 @@
-package com.ropotdaniel.full_blog.datatransferobject.user
+package com.ropotdaniel.full_blog.datatransferobject.author
 
-data class UpdateUserDTO(
+data class UpdateAuthorDTO(
     var firstName: String? = null,
     var lastName: String? = null,
     var password: String? = null,

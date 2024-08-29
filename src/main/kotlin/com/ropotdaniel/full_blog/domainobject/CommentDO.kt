@@ -26,8 +26,8 @@ data class CommentDO(
     var content: String,
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: UserDO,
+    @JoinColumn(name = "author_id")
+    val author: AuthorDO,
 
     @Column(nullable = false)
     var likes: Int = 0,
