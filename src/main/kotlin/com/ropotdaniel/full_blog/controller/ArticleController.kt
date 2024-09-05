@@ -12,6 +12,7 @@ import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_DIRECTION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid
+import org.springframework.security.access.prepost.PreAuthorize
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -85,11 +86,13 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     *   "bannerImageUrl": "https://example.com/image.jpg"
     * }
     * */
+    @PreAuthorize("hasPermission(#article, 'edit')")
     @PutMapping("/article/{id}")
     fun updateArticle(@PathVariable id: Long,
                       @Valid @RequestBody updateArticleDTO: UpdateArticleDTO): ArticleDTO
         = articleService.updateArticle(id, updateArticleDTO)
 
+    @PreAuthorize("hasPermission(#article, 'edit')")
     @DeleteMapping("/article/{id}")
     fun deleteArticle(@PathVariable id: Long)
         = articleService.deleteArticle(id)
