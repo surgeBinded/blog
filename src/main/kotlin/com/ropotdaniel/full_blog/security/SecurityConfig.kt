@@ -3,6 +3,7 @@ package com.ropotdaniel.full_blog.security
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -54,6 +55,7 @@ class SecurityConfig(
 
         http.authorizeHttpRequests { auth ->
             auth
+                .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll() // Allow access to H2 console in dev
                 .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
                 .anyRequest().authenticated() // All other endpoints require authentication
