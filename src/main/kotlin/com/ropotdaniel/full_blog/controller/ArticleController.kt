@@ -86,13 +86,13 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     *   "bannerImageUrl": "https://example.com/image.jpg"
     * }
     * */
-    @PreAuthorize("hasPermission(#article, 'edit')")
+    @PreAuthorize("hasPermission(#id, 'ArticleDO', 'edit')")
     @PutMapping("/article/{id}")
     fun updateArticle(@PathVariable id: Long,
                       @Valid @RequestBody updateArticleDTO: UpdateArticleDTO): ArticleDTO
         = articleService.updateArticle(id, updateArticleDTO)
 
-    @PreAuthorize("hasPermission(#article, 'edit')")
+    @PreAuthorize("hasPermission(#id, 'ArticleDO', 'delete')")
     @DeleteMapping("/article/{id}")
     fun deleteArticle(@PathVariable id: Long)
         = articleService.deleteArticle(id)
