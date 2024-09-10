@@ -19,16 +19,17 @@ class LoginController @Autowired constructor(
 ) {
 
     @PostMapping("/login")
-    @Throws(AuthenticationException::class)
     fun login(@Valid @RequestBody request: LoginRequest): JwtResponse {
-        val authenticationToken = UsernamePasswordAuthenticationToken(request.username, request.password)
+        return try {
+            val authenticationToken = UsernamePasswordAuthenticationToken(request.username, request.password)
+            val authentication = authenticationManager.authenticate(authenticationToken)
 
-        // Authenticate the user (this will throw an exception if the credentials are invalid)
-        val authentication = authenticationManager.authenticate(authenticationToken)
+            // Generate a JWT token for the authenticated user
+            val jwtToken = jwtTokenUtil.generateToken(authentication.name, mapOf())
 
-        // Generate a JWT token for the authenticated user
-        val jwtToken = jwtTokenUtil.generateToken(authentication.name, mapOf())
-
-        return JwtResponse(jwtToken) // Return the JWT token in the response
+            JwtResponse(jwtToken) // Return the JWT token in the response
+        } catch (e: AuthenticationException) {
+            throw RuntimeException("Invalid username or password", e) // Add logging or more specific error message
+        }
     }
 }

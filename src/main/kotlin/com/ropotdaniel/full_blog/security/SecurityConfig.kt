@@ -1,6 +1,7 @@
 package com.ropotdaniel.full_blog.security
 
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -16,6 +17,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 
 @EnableWebSecurity
 @EnableMethodSecurity
+@Configuration
 class SecurityConfig(
     private val jwtRequestFilter: JwtRequestFilter,
     private val customPermissionEvaluator: CustomPermissionEvaluator,
@@ -48,7 +50,8 @@ class SecurityConfig(
         http.csrf { it.disable() }
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/api/auth/**").permitAll() // Allow login and register endpoints
+                    .requestMatchers("/h2-console/**").permitAll() // allow access to the h2 db
+                    .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
                     .anyRequest().authenticated() // All other endpoints require authentication
             }
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -59,16 +62,19 @@ class SecurityConfig(
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
+    // Provide the AuthenticationManager and configure it with the CustomUserDetailsService and PasswordEncoder
     @Bean
-    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
-        return authenticationConfiguration.authenticationManager
-    }
-
-    @Bean
-    fun configureAuthenticationManager(authenticationManagerBuilder: AuthenticationManagerBuilder) {
+    fun authenticationManager(
+        authenticationConfiguration: AuthenticationConfiguration,
+        authenticationManagerBuilder: AuthenticationManagerBuilder
+    ): AuthenticationManager {
+        // Configure the authentication manager with your custom UserDetailsService and PasswordEncoder
         authenticationManagerBuilder
             .userDetailsService(customUserDetailsService)
             .passwordEncoder(passwordEncoder())
+
+        // Return the authentication manager
+        return authenticationConfiguration.authenticationManager
     }
 
     @Bean

@@ -38,3 +38,23 @@ CREATE TABLE IF NOT EXISTS comment (
     CONSTRAINT fk_parent_comment FOREIGN KEY (parent_comment_id) REFERENCES comment(id),
     CONSTRAINT fk_comment_author FOREIGN KEY (author_id) REFERENCES authors(id)
 );
+
+-- Create roles table
+CREATE TABLE IF NOT EXISTS roles (
+                                     id INT AUTO_INCREMENT PRIMARY KEY,
+                                     name VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Create author_roles table to represent the many-to-many relationship between authors and roles
+CREATE TABLE IF NOT EXISTS author_roles (
+                                            author_id INT NOT NULL,
+                                            role_id INT NOT NULL,
+                                            CONSTRAINT fk_author_role_author FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE,
+                                            CONSTRAINT fk_author_role_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+                                            PRIMARY KEY (author_id, role_id)
+);
+
+CREATE TABLE IF NOT EXISTS jwt_secret (
+                                          id INT AUTO_INCREMENT PRIMARY KEY,
+                                          secret_key VARCHAR(255) NOT NULL
+);
