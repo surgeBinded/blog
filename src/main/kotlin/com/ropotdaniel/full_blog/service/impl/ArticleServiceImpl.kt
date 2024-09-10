@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -57,6 +59,16 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     override fun updateArticle(id: Long, modifiedArticleDO: UpdateArticleDTO): ArticleDTO {
         val repoArticle =
             articleRepository.findById(id).orElseThrow { ArticleNotFoundException("Article not found with id = $id") }
+
+        // Get the current authenticated user
+        val authentication = SecurityContextHolder.getContext().authentication
+        val currentUsername = authentication.name
+
+        // Check if the user is either the author of the article or has the ROLE_ADMIN authority
+        if (currentUsername != repoArticle.author.username &&
+            !authentication.authorities.any { it.authority == "ROLE_ADMIN" }) {
+            throw AccessDeniedException("You don't have permission to edit this article.")
+        }
 
         modifiedArticleDO.title?.let { repoArticle.title = it }
         modifiedArticleDO.content?.let { repoArticle.content = it }

@@ -35,7 +35,15 @@ data class AuthorDO(
     val comments: List<CommentDO> = mutableListOf(),
 
     @Column(nullable = false)
-    var deleted: Boolean = false
+    var deleted: Boolean = false,
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "author_roles",
+        joinColumns = [JoinColumn(name = "author_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    val roles: Set<RoleDO> = mutableSetOf()
 ) {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")

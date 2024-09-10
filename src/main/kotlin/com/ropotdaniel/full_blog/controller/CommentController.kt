@@ -10,6 +10,7 @@ import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_BY
 import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_DIRECTION
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -78,6 +79,7 @@ class CommentController(
     /*
     * PATCH /api/v1/comments/1/like
     * */
+    @PreAuthorize("hasPermission(#commentId, 'CommentDO', 'edit')")
     @PatchMapping("/{commentId}/like")
     fun likeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.likeComment(commentId)
@@ -86,6 +88,7 @@ class CommentController(
     /*
     * PATCH /api/v1/comments/1/dislike
     * */
+    @PreAuthorize("hasPermission(#commentId, 'CommentDO', 'edit')")
     @PatchMapping("/{commentId}/dislike")
     fun dislikeComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.dislikeComment(commentId)
@@ -97,11 +100,13 @@ class CommentController(
     *  "newContent": "This is the new content"
     * }
      */
+    @PreAuthorize("hasPermission(#commentId, 'CommentDO', 'edit')")
     @PatchMapping("/{commentId}")
     fun editCommentContent(@PathVariable commentId: Long, @RequestBody updateCommentDTO: UpdateCommentDTO): CommentDTO {
         return commentService.editComment(commentId, updateCommentDTO)
     }
 
+    @PreAuthorize("hasPermission(#commentId, 'CommentDO', 'delete')")
     @DeleteMapping("/{commentId}")
     fun deleteComment(@PathVariable commentId: Long): CommentDTO {
         return commentService.deleteComment(commentId)

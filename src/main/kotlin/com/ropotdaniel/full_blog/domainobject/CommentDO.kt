@@ -40,9 +40,12 @@ data class CommentDO(
 
     @Column(name = "date_updated")
     var dateUpdated: ZonedDateTime = ZonedDateTime.now()
-) {
+): Ownable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(nullable = false, name = "date_created")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     val dateCreated: ZonedDateTime = ZonedDateTime.now()
+
+    override val authorUsername: String
+        get() = author.username
 }
