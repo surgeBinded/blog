@@ -2,6 +2,7 @@ package com.ropotdaniel.full_blog.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -25,14 +26,16 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    @Profile("dev")
+    fun devSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.headers { headers ->
             headers
                 .contentSecurityPolicy { csp ->
-                    csp.policyDirectives("default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self'; frame-ancestors 'self'")
+                    // Allow 'unsafe-inline' for H2 console in development only
+                    csp.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; style-src 'self'; frame-ancestors 'self'")
                 }
                 .frameOptions { frameOptions ->
-                    frameOptions.sameOrigin()
+                    frameOptions.sameOrigin() // Required for H2 console
                 }
                 .httpStrictTransportSecurity { hsts ->
                     hsts
@@ -47,17 +50,56 @@ class SecurityConfig(
                     permissions.policy("geolocation=(), camera=(), microphone=()")
                 }
         }
-        http.csrf { it.disable() }
-            .authorizeHttpRequests { auth ->
-                auth
-                    .requestMatchers("/h2-console/**").permitAll() // allow access to the h2 db
-                    .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
-                    .anyRequest().authenticated() // All other endpoints require authentication
-            }
+        http.csrf { it.disable() } // Disable CSRF for H2 console in development
+
+        http.authorizeHttpRequests { auth ->
+            auth
+                .requestMatchers("/h2-console/**").permitAll() // Allow access to H2 console in dev
+                .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
+                .anyRequest().authenticated() // All other endpoints require authentication
+        }
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
+
+    // Production Profile: Block H2 console, enable CSRF, strict CSP
+    @Bean
+    @Profile("prd")
+    fun prodSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http.headers { headers ->
+            headers
+                .contentSecurityPolicy { csp ->
+                    // Strict CSP, no unsafe-inline in production
+                    csp.policyDirectives("default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self'; frame-ancestors 'self'")
+                }
+                .frameOptions { frameOptions ->
+                    frameOptions.sameOrigin() // Ensure frames work in prod (if needed)
+                }
+                .httpStrictTransportSecurity { hsts ->
+                    hsts
+                        .includeSubDomains(true)
+                        .maxAgeInSeconds(31536000)
+                        .preload(true)
+                }
+                .referrerPolicy { referrerPolicy ->
+                    referrerPolicy.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+                }
+                .permissionsPolicy { permissions ->
+                    permissions.policy("geolocation=(), camera=(), microphone=()")
+                }
+        }
+
+        http.authorizeHttpRequests { auth ->
+            auth
+                .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
+                .anyRequest().authenticated() // All other endpoints require authentication
+        }
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+
+        return http.build()
+    }
+
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
