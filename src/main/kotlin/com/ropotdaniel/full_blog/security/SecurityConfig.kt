@@ -94,6 +94,7 @@ class SecurityConfig(
 
         http.authorizeHttpRequests { auth ->
             auth
+                .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll() // Allow login and register endpoints
                 .anyRequest().authenticated() // All other endpoints require authentication
         }
