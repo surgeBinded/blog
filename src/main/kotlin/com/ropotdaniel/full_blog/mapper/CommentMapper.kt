@@ -3,7 +3,6 @@ package com.ropotdaniel.full_blog.mapper
 import com.ropotdaniel.full_blog.dataaccessobject.ArticleRepository
 import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.datatransferobject.comment.CommentDTO
-import com.ropotdaniel.full_blog.datatransferobject.comment.ParentCommentDTO
 import com.ropotdaniel.full_blog.datatransferobject.comment.ReplyDTO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
@@ -18,8 +17,9 @@ object CommentMapper {
         return CommentDTO(
             id = comment.id,
             articleId = comment.article.id,
-            parentComment = comment.parentComment?.let { ParentCommentDTO(it.id) },
+            parentCommentId = comment.parentComment?.id,
             replies = comment.replies.filter { !it.deleted }.map { reply -> ReplyDTO(reply.id) }.toMutableList(),
+            authorId = comment.author.id,
             content = comment.content,
             likes = comment.likes,
             dislikes = comment.dislikes,
@@ -30,8 +30,8 @@ object CommentMapper {
 
     fun toDO(comment: CommentDTO): CommentDO {
         val article = articleRepository.getReferenceById(comment.articleId)
-        val parentComment = comment.parentComment?.let {
-            commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Parent comment not found") }
+        val parentComment = comment.parentCommentId?.let {
+            commentRepository.findById(it).orElseThrow { CommentNotFoundException("Parent comment not found") }
         }
         val replies = comment.replies.map {
             commentRepository.findById(it.id).orElseThrow { CommentNotFoundException("Reply not found") }
