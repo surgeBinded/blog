@@ -15,6 +15,7 @@ object AuthorMapper{
 
     fun toDTO(author: AuthorDO): AuthorDTO {
         return AuthorDTO(
+            id = author.id,
             firstName = author.firstName,
             lastName = author.lastName,
             username = author.username,
