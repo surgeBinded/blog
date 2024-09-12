@@ -83,6 +83,13 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
     @Transactional
     override fun deleteArticle(id: Long) {
         logger.info("Deleting article with id: $id")
-        articleRepository.deleteById(id).let { throw ArticleNotFoundException("Article not found with id = $id") }
+
+        val article = articleRepository.findById(id)
+
+        if (article.isPresent) {
+            articleRepository.deleteById(id)
+        } else {
+            throw ArticleNotFoundException("Article not found with id = $id")
+        }
     }
 }
