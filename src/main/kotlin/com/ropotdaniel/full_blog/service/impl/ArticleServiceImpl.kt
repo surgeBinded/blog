@@ -8,6 +8,8 @@ import com.ropotdaniel.full_blog.datatransferobject.response.ArticleResponse
 import com.ropotdaniel.full_blog.exceptions.ArticleNotFoundException
 import com.ropotdaniel.full_blog.mapper.ArticleMapper
 import com.ropotdaniel.full_blog.service.ArticleService
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.Validator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -18,7 +20,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ArticleServiceImpl @Autowired constructor(private val articleRepository: ArticleRepository) :
+class ArticleServiceImpl @Autowired constructor(
+    private val articleRepository: ArticleRepository,
+    private val validator: Validator
+) :
     ArticleService {
 
     private val logger = LoggerFactory.getLogger(ArticleServiceImpl::class.java)
@@ -66,7 +71,8 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
 
         // Check if the user is either the author of the article or has the ROLE_ADMIN authority
         if (currentUsername != repoArticle.author.username &&
-            !authentication.authorities.any { it.authority == "ROLE_ADMIN" }) {
+            !authentication.authorities.any { it.authority == "ROLE_ADMIN" }
+        ) {
             throw AccessDeniedException("You don't have permission to edit this article.")
         }
 
@@ -74,6 +80,11 @@ class ArticleServiceImpl @Autowired constructor(private val articleRepository: A
         modifiedArticleDO.content?.let { repoArticle.content = it }
         modifiedArticleDO.bannerImageUrl?.let { repoArticle.bannerImageUrl = it }
         modifiedArticleDO.dateUpdated.let { repoArticle.dateUpdated = it }
+
+        val violations = validator.validate(repoArticle)
+        if (violations.isNotEmpty()) {
+            throw ConstraintViolationException(violations)
+        }
 
         val updatedArticle = articleRepository.save(repoArticle)
 

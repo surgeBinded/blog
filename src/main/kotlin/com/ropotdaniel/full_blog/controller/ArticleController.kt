@@ -12,6 +12,8 @@ import com.ropotdaniel.full_blog.util.Constants.Companion.DEFAULT_SORT_DIRECTION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 
 @RestController
@@ -19,9 +21,9 @@ import org.springframework.security.access.prepost.PreAuthorize
 class ArticleController @Autowired constructor(private val articleService: ArticleService) {
 
     @GetMapping("/articles/{id}")
-    fun getArticle(@PathVariable id: Long): ArticleDTO
-        = articleService.getArticle(id)
-
+    fun getArticle(@PathVariable id: Long): ResponseEntity<ArticleDTO> {
+        return ResponseEntity.ok(articleService.getArticle(id))
+    }
 
 /*
     * GET /api/v1/articles?pageNo=0&pageSize=10&sortBy=id&sortDir=asc
@@ -57,9 +59,9 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun getArticles(@RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER.toString(), required = false) pageNo: Int,
                     @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE.toString(), required = false) pageSize: Int,
                     @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) sortBy: String,
-                    @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) sortDir: String): ArticleResponse
+                    @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) sortDir: String): ResponseEntity<ArticleResponse>
     {
-        return articleService.getAllArticles(pageNo, pageSize, sortBy, sortDir)
+        return ResponseEntity.ok(articleService.getAllArticles(pageNo, pageSize, sortBy, sortDir))
     }
 
     /*
@@ -71,8 +73,12 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     * }
     */
     @PostMapping("/article")
-    fun createArticle(@Valid @RequestBody createArticleDTO: CreateArticleDTO): ArticleDTO
-        = articleService.createArticle(createArticleDTO)
+    fun createArticle(@Valid @RequestBody createArticleDTO: CreateArticleDTO): ResponseEntity<ArticleDTO> {
+        val createdArticle = articleService.createArticle(createArticleDTO)
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(createdArticle)
+    }
 
     /*
     * updates the article with the given id
@@ -88,11 +94,14 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @PreAuthorize("hasPermission(#id, 'ArticleDO', 'edit')")
     @PutMapping("/article/{id}")
     fun updateArticle(@PathVariable id: Long,
-                      @Valid @RequestBody updateArticleDTO: UpdateArticleDTO): ArticleDTO
-        = articleService.updateArticle(id, updateArticleDTO)
+                      @Valid @RequestBody updateArticleDTO: UpdateArticleDTO): ResponseEntity<ArticleDTO>{
+        return ResponseEntity.ok(articleService.updateArticle(id, updateArticleDTO))
+    }
 
     @PreAuthorize("hasPermission(#id, 'ArticleDO', 'delete')")
     @DeleteMapping("/article/{id}")
-    fun deleteArticle(@PathVariable id: Long)
-        = articleService.deleteArticle(id)
+    fun deleteArticle(@PathVariable id: Long): ResponseEntity<String> {
+        articleService.deleteArticle(id)
+        return ResponseEntity.ok("Resource successfully deleted")
+    }
 }

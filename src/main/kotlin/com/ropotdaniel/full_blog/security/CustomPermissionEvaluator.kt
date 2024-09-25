@@ -5,6 +5,8 @@ import com.ropotdaniel.full_blog.dataaccessobject.CommentRepository
 import com.ropotdaniel.full_blog.domainobject.ArticleDO
 import com.ropotdaniel.full_blog.domainobject.CommentDO
 import com.ropotdaniel.full_blog.domainobject.Ownable
+import com.ropotdaniel.full_blog.exceptions.ArticleNotFoundException
+import com.ropotdaniel.full_blog.exceptions.CommentNotFoundException
 import org.springframework.security.access.PermissionEvaluator
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
@@ -33,12 +35,14 @@ class CustomPermissionEvaluator(
         // Check if the target type is ArticleDO or CommentDO and fetch the object by ID
         return when (targetType) {
             "ArticleDO" -> {
-                val article = articleRepository.findById(targetId as Long).orElse(null)
-                article?.let { checkArticleOwnership(authentication, it, permission, username) } ?: false
+                val article = articleRepository.findById(targetId as Long)
+                    .orElseThrow { ArticleNotFoundException("Article with id $targetId not found") }
+                checkArticleOwnership(authentication, article, permission, username)
             }
             "CommentDO" -> {
-                val comment = commentRepository.findById(targetId as Long).orElse(null)
-                comment?.let { checkCommentOwnership(authentication, it, permission, username) } ?: false
+                val comment = commentRepository.findById(targetId as Long)
+                    .orElseThrow { CommentNotFoundException("Comment with id $targetId not found") }
+                checkCommentOwnership(authentication, comment, permission, username)
             }
             else -> false
         }
