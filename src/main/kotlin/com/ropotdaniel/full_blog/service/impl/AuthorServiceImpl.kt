@@ -1,9 +1,9 @@
 package com.ropotdaniel.full_blog.service.impl
 
 import com.ropotdaniel.full_blog.dataaccessobject.AuthorRepository
+import com.ropotdaniel.full_blog.datatransferobject.author.AuthorDTO
 import com.ropotdaniel.full_blog.datatransferobject.author.CreateAuthorDTO
 import com.ropotdaniel.full_blog.datatransferobject.author.UpdateAuthorDTO
-import com.ropotdaniel.full_blog.datatransferobject.author.AuthorDTO
 import com.ropotdaniel.full_blog.exceptions.AuthorAlreadyExistsException
 import com.ropotdaniel.full_blog.exceptions.AuthorNotFoundException
 import com.ropotdaniel.full_blog.mapper.AuthorMapper
@@ -35,12 +35,11 @@ class AuthorServiceImpl @Autowired constructor(private val authorRepository: Aut
     }
 
     override fun updateAuthor(id: Long, updateAuthorDTO: UpdateAuthorDTO): AuthorDTO {
-        val repoAuthor = authorRepository.findById(id).orElseThrow { AuthorNotFoundException("author not found with id = $id") }
+        val repoAuthor =
+            authorRepository.findById(id).orElseThrow { AuthorNotFoundException("author not found with id = $id") }
 
         updateAuthorDTO.firstName?.let { repoAuthor.firstName = it }
         updateAuthorDTO.lastName?.let { repoAuthor.lastName = it }
-        updateAuthorDTO.password?.let { repoAuthor.password = it }
-        updateAuthorDTO.deleted?.let { repoAuthor.deleted = it }
 
         val updatedAuthor = authorRepository.save(repoAuthor)
 

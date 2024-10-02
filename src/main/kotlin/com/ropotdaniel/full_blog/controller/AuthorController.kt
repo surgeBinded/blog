@@ -32,6 +32,10 @@ class AuthorController @Autowired constructor(private val authorService: AuthorS
     fun updateAuthor(@PathVariable id: Long, @RequestBody updateAuthorDTO: UpdateAuthorDTO): ResponseEntity<AuthorDTO>
         = ResponseEntity.ok(authorService.updateAuthor(id, updateAuthorDTO))
 
+    /*
+    * Create an update password endpoint
+    * */
+
     @DeleteMapping("/authors/{id}")
     fun deleteAuthor(@PathVariable id: Long): ResponseEntity<String> {
         authorService.deleteAuthor(id)
