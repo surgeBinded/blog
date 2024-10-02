@@ -100,8 +100,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
 
     @PreAuthorize("hasPermission(#id, 'ArticleDO', 'delete')")
     @DeleteMapping("/article/{id}")
-    fun deleteArticle(@PathVariable id: Long): ResponseEntity<String> {
+    fun deleteArticle(@PathVariable id: Long): ResponseEntity<Unit> {
         articleService.deleteArticle(id)
-        return ResponseEntity.ok("Resource successfully deleted")
+        return ResponseEntity.ok().build()
     }
 }
