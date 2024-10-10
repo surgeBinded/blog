@@ -8,6 +8,7 @@ import com.ropotdaniel.full_blog.datatransferobject.author.UpdateAuthorPassword
 import com.ropotdaniel.full_blog.domainobject.AuthorDO
 import com.ropotdaniel.full_blog.exceptions.AuthorAlreadyExistsException
 import com.ropotdaniel.full_blog.exceptions.AuthorNotFoundException
+import com.ropotdaniel.full_blog.exceptions.NewPasswordsNotMatchingException
 import com.ropotdaniel.full_blog.exceptions.OldPasswordIncorrectException
 import com.ropotdaniel.full_blog.mapper.AuthorMapper
 import com.ropotdaniel.full_blog.service.AuthorService
@@ -56,8 +57,9 @@ class AuthorServiceImpl @Autowired constructor(
     override fun changePassword(id: Long, updateAuthorPassword: UpdateAuthorPassword) {
         val repoAuthor = getRepoAuthor(id)
 
-        print(repoAuthor.password + " " + updateAuthorPassword.oldPassword)
-        print(passwordEncoder.matches(repoAuthor.password, updateAuthorPassword.oldPassword))
+        if (updateAuthorPassword.newPassword != updateAuthorPassword.repeatNewPassword) {
+            throw NewPasswordsNotMatchingException("The passwords don't match")
+        }
 
         if (!passwordEncoder.matches(repoAuthor.password, updateAuthorPassword.oldPassword)){
             throw OldPasswordIncorrectException("The old password is not the correct one")

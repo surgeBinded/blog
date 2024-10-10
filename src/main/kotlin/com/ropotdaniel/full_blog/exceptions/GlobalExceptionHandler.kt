@@ -58,4 +58,9 @@ class GlobalExceptionHandler {
     fun handleOldPasswordIncorrectException(ex: OldPasswordIncorrectException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.message)
     }
+
+    @ExceptionHandler(NewPasswordsNotMatchingException::class)
+    fun handleNewPasswordsNotMatchingException(ex: NewPasswordsNotMatchingException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.message)
+    }
 }
