@@ -53,4 +53,9 @@ class GlobalExceptionHandler {
     fun handleAuthorNotFoundException(ex: ArticleNotFoundException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
     }
+
+    @ExceptionHandler(OldPasswordIncorrectException::class)
+    fun handleOldPasswordIncorrectException(ex: OldPasswordIncorrectException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ex.message)
+    }
 }

@@ -3,6 +3,7 @@ package com.ropotdaniel.full_blog.controller
 import com.ropotdaniel.full_blog.datatransferobject.author.CreateAuthorDTO
 import com.ropotdaniel.full_blog.datatransferobject.author.UpdateAuthorDTO
 import com.ropotdaniel.full_blog.datatransferobject.author.AuthorDTO
+import com.ropotdaniel.full_blog.datatransferobject.author.UpdateAuthorPassword
 import com.ropotdaniel.full_blog.service.AuthorService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,13 +33,17 @@ class AuthorController @Autowired constructor(private val authorService: AuthorS
     fun updateAuthor(@PathVariable id: Long, @RequestBody updateAuthorDTO: UpdateAuthorDTO): ResponseEntity<AuthorDTO>
         = ResponseEntity.ok(authorService.updateAuthor(id, updateAuthorDTO))
 
-    /*
-    * Create an update password endpoint
+    /* TODO: should only be possible for the author to change the password.
     * */
+    @PatchMapping("/authors/{id}/changePassword")
+    fun changePassword(@PathVariable id: Long, @RequestBody updateAuthorPassword: UpdateAuthorPassword) : ResponseEntity<Unit> {
+        authorService.changePassword(id, updateAuthorPassword)
+        return ResponseEntity.ok().build()
+    }
 
     @DeleteMapping("/authors/{id}")
-    fun deleteAuthor(@PathVariable id: Long): ResponseEntity<String> {
+    fun deleteAuthor(@PathVariable id: Long): ResponseEntity<Unit> {
         authorService.deleteAuthor(id)
-        return ResponseEntity.ok("Author successfully deleted.");
+        return ResponseEntity.ok().build();
     }
 }
