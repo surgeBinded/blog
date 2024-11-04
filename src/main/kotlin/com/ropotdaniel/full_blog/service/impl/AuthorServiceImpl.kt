@@ -53,7 +53,6 @@ class AuthorServiceImpl @Autowired constructor(
         return AuthorMapper.toDTO(updatedAuthor)
     }
 
-    // TODO: finish up
     override fun changePassword(id: Long, updateAuthorPassword: UpdateAuthorPassword) {
         val repoAuthor = getRepoAuthor(id)
 
@@ -61,6 +60,7 @@ class AuthorServiceImpl @Autowired constructor(
             throw NewPasswordsNotMatchingException("The passwords don't match")
         }
 
+        // TODO: this doesn't work
         if (!passwordEncoder.matches(repoAuthor.password, updateAuthorPassword.oldPassword)){
             throw OldPasswordIncorrectException("The old password is not the correct one")
         }
