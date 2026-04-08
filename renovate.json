@@ -26,8 +26,8 @@
       "customType": "regex",
       "datasourceTemplate": "docker",
       "depNameTemplate": "envoyproxy/envoy-distroless",
-      "fileMatch": [
-        "^\\.github/workflows/.*\\.yml$"
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.yml$/"
       ],
       "matchStrings": [
         "PROXY_IMAGE: envoyproxy/envoy-distroless:(?<currentValue>.*)"
